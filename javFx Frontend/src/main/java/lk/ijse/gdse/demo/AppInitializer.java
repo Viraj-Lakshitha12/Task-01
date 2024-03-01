@@ -7,7 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class AppInitializer extends Application {
     @Override
@@ -19,10 +23,13 @@ public class AppInitializer extends Application {
         stage.setTitle("Category Form");
         stage.centerOnScreen();
 
+
         stage.show();
     }
 
     public static void main(String[] args) {
         launch();
     }
+
+
 }

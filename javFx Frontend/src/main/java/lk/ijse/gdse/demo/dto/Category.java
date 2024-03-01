@@ -1,9 +1,21 @@
 package lk.ijse.gdse.demo.dto;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
+    @SerializedName("id")
+    @Expose(serialize = true, deserialize = true)
     private String id;
+
+
+    @SerializedName("code")
     private String code;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("status")
     private String status;
 
     public Category() {
@@ -47,6 +59,8 @@ public class Category {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    // Other methods or overrides as needed
 
     @Override
     public String toString() {
