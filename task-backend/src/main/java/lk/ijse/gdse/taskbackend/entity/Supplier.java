@@ -1,9 +1,6 @@
 package lk.ijse.gdse.taskbackend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Category {
+public class Supplier {
     @Id
     private String id;
 
-    private String code;
+    private String supplierCode;
 
     private String name;
 
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private Status status = Status.Active;
+
     public enum Status {
         Active,
         Inactive

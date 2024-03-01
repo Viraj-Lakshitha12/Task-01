@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -31,4 +32,24 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepo.findAll();
     }
+
+    @Override
+    public void deleteCategory(String id) {
+        categoryRepo.deleteById(id);
+    }
+
+    @Override
+    public Optional<Category> findCategoryById(String id) {
+        return categoryRepo.findById(id);
+    }
+
+    @Override
+    public Category updateCategory(CategoryDTO categoryDTO) {
+        Optional<Category> byId = categoryRepo.findById(categoryDTO.getId());
+        if (byId.isPresent()) {
+            return categoryRepo.save(modelMapper.map(categoryDTO, Category.class));
+        }
+        return null;
+    }
+
 }
