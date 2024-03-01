@@ -34,17 +34,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(String id) {
+    public void deleteCategory(Long id) {
         categoryRepo.deleteById(id);
     }
 
     @Override
-    public Optional<Category> findCategoryById(String id) {
+    public Optional<Category> findCategoryById(Long id) {
         return categoryRepo.findById(id);
     }
 
     @Override
     public Category updateCategory(CategoryDTO categoryDTO) {
+        System.out.println(categoryDTO);
         Optional<Category> byId = categoryRepo.findById(categoryDTO.getId());
         if (byId.isPresent()) {
             return categoryRepo.save(modelMapper.map(categoryDTO, Category.class));

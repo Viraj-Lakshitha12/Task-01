@@ -8,11 +8,9 @@ import java.util.Optional;
 
 public interface CategoryService {
     Category saveCategory(CategoryDTO categoryDTO);
-
     List<Category> getAllCategories();
-
-    void deleteCategory(String id);
-    Optional<Category> findCategoryById(String id);
+    void deleteCategory(Long id);
+    Optional<Category> findCategoryById(Long id);
 
     Category updateCategory(CategoryDTO categoryDTO);
 }

@@ -23,6 +23,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseUtil saveCategory(@RequestBody CategoryDTO categoryDTO) {
+        System.out.println(categoryDTO);
         Category category = categoryService.saveCategory(categoryDTO);
         return new ResponseUtil(200, "successfully save category", category);
 
@@ -36,21 +37,25 @@ public class CategoryController {
     }
 
     @DeleteMapping(params = {"id"})
-    public ResponseUtil DeleteCategoies(@RequestParam String id) {
+    public ResponseUtil DeleteCategoies(@RequestParam Long id) {
         categoryService.deleteCategory(id);
         return new ResponseUtil(200, "successfully Delete category", null);
     }
 
     @GetMapping(value = "/findById", params = {"id"})
-    public ResponseUtil findCategoryById(@RequestParam String id) {
+    public ResponseUtil findCategoryById(@RequestParam Long id) {
         Optional<Category> categoryById = categoryService.findCategoryById(id);
         return new ResponseUtil(200, "successfully find category", categoryById);
     }
 
     @PutMapping
     public ResponseUtil updateCategory(@RequestBody CategoryDTO categoryDTO) {
+        System.out.println(categoryDTO);
+        System.out.println("ok 1");
         Category category = categoryService.updateCategory(categoryDTO);
+        System.out.println("ok 2");
         if (category != null) {
+            System.out.println("ok 3");
             return new ResponseUtil(200, "successfully update category", category);
         } else {
             return new ResponseUtil(200, "not found category", null);
