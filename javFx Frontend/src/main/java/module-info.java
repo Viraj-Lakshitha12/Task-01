@@ -1,6 +1,7 @@
 module lk.ijse.gdse.demo {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.net.http;
 
 
     opens lk.ijse.gdse.demo to javafx.fxml;
