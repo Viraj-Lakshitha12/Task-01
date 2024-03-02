@@ -1,7 +1,13 @@
 package lk.ijse.gdse.demo.dto;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Supplier {
-    private String id;
+    @SerializedName("id")
+    @Expose(serialize = true, deserialize = true)
+    private Long id;
+    @SerializedName("supplierCode")
     private String supplierCode;
     private String name;
     private String address;
@@ -10,7 +16,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(String id, String supplierCode, String name, String address, String status) {
+    public Supplier(Long id, String supplierCode, String name, String address, String status) {
         this.id = id;
         this.supplierCode = supplierCode;
         this.name = name;
@@ -18,11 +24,11 @@ public class Supplier {
         this.status = status;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

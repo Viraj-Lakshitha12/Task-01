@@ -101,8 +101,32 @@ public class SupplierController {
 
     @FXML
     void btnDelete(ActionEvent event) {
+        String idText = txtId.getText();
+
+        try {
+            if (idText.isEmpty()) {
+                showAlert("Error", "Please enter a valid unit ID for deletion.");
+                return;
+            }
+
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/api/suppliers/" + idText))
+                    .header("Content-Type", "application/json")
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            showAlert("Delete Successful", "Supplier has been successfully deleted.");
+            loadDataAndSetToTable();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    //save supplier
     @FXML
     void btnSave(ActionEvent event) {
         Supplier supplierDTO = new Supplier(
@@ -123,7 +147,7 @@ public class SupplierController {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                showAlert("Save Successful", "Supplier has been successfully updated.");
+                showAlert("Save Successful", "Supplier has been successfully saved.");
             }
             loadDataAndSetToTable();
 
@@ -141,9 +165,34 @@ public class SupplierController {
         }
     }
 
+    //update supplier
     @FXML
     void btnUpdate(ActionEvent event) {
+        Supplier supplierDTO = new Supplier(
+                Long.parseLong(txtId.getText()),
+                txtCode.getText(),
+                txtName.getText(),
+                txtAddress.getText(),
+                txtStatus.getText()
+        );
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
 
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/api/suppliers"))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(supplierDTOToJson(supplierDTO)))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                showAlert("Update Successful", "Supplier has been successfully updated.");
+            }
+            loadDataAndSetToTable();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void showAlert(String title, String contentText) {
