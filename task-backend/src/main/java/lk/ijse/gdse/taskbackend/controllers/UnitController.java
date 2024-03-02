@@ -33,10 +33,11 @@ public class UnitController {
         return new ResponseUtil(200, "successfully update unit", unit);
     }
 
-    public ResponseUtil getAllUnit() {
+    @GetMapping
+    public List<Unit> getAllUnit() {
         List<Unit> allUnit = unitService.getAllUnit();
-        return new ResponseUtil(200, "fount all unit", allUnit);
-
+        //  return new ResponseUtil(200, "fount all unit", allUnit);
+        return allUnit;
     }
 
     @GetMapping(path = "/getUnitById", params = {"id"})
@@ -45,8 +46,8 @@ public class UnitController {
         return new ResponseUtil(200, "found unit", unitById);
     }
 
-    @DeleteMapping(params = {"id"})
-    public ResponseUtil deleteUnitById(@RequestParam String id) {
+    @DeleteMapping("/{id}")
+    public ResponseUtil deleteUnitById(@PathVariable String id) {
         unitService.deleteUnit(id);
         return new ResponseUtil(200, "successfully Delete unit", null);
     }

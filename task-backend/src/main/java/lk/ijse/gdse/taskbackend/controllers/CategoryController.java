@@ -33,13 +33,13 @@ public class CategoryController {
     public List<Category> getAllCategoies() {
         List<Category> allCategories = categoryService.getAllCategories();
 //        return new ResponseUtil(200, "found all category", allCategories);
-    return allCategories;
+        return allCategories;
     }
 
-    @DeleteMapping(params = {"id"})
-    public ResponseUtil DeleteCategoies(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseUtil deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return new ResponseUtil(200, "successfully Delete category", null);
+        return new ResponseUtil(200, "Successfully deleted category", null);
     }
 
     @GetMapping(value = "/findById", params = {"id"})

@@ -51,10 +51,19 @@ public class UnitServiceImpl implements UnitService {
 
     @Override
     public Unit updateUnit(UnitDTO unitDTO) {
-        Optional<Unit> byId = unitRepo.findById(unitDTO.getId());
-        if (byId.isEmpty()) {
-            return null;
+        Optional<Unit> optionalUnit = unitRepo.findById(unitDTO.getId());
+
+        if (optionalUnit.isPresent()) {
+            Unit existingUnit = optionalUnit.get();
+
+            existingUnit.setCode(unitDTO.getCode());
+            existingUnit.setName(unitDTO.getName());
+            existingUnit.setStatus(Unit.Status.valueOf(unitDTO.getStatus()));
+
+            return unitRepo.save(existingUnit);
         }
-        return unitRepo.save(modelMapper.map(byId, Unit.class));
+
+        return null;
     }
+
 }
