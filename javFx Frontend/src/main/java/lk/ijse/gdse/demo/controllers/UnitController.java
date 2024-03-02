@@ -10,7 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import lk.ijse.gdse.demo.dto.Category;
+import lk.ijse.gdse.demo.dto.Unit;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,22 +21,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategoryControllers {
+public class UnitController {
 
     @FXML
-    private TableColumn<Category, String> colCode;
+    private TableColumn<Unit, String> colCode;
 
     @FXML
-    private TableColumn<Category, String> colId;
+    private TableColumn<Unit, String> colId;
 
     @FXML
-    private TableColumn<Category, String> colName;
+    private TableColumn<Unit, String> colName;
 
     @FXML
-    private TableColumn<Category, String> colStatus;
+    private TableColumn<Unit, String> colStatus;
 
     @FXML
-    private TableView<Category> tblView;
+    private TableView<Unit> tblView;
 
     @FXML
     private TextField txtCode;
@@ -56,63 +56,68 @@ public class CategoryControllers {
     }
 
     private void setCellValueFactory() {
+        // Set cell value factory for each column
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
     }
 
     private void loadDataAndSetToTable() {
-        List<Category> categoryList = fetchDataFromBackend();
-        updateTableView(categoryList);
+        // Fetch data from backend and update the table
+        List<Unit> unitList = fetchDataFromBackend();
+        updateTableView(unitList);
     }
 
-    private List<Category> fetchDataFromBackend() {
+    private List<Unit> fetchDataFromBackend() {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/categories"))
+                    .uri(URI.create("http://localhost:8080/api/unit"))
                     .GET()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Category[] categories = objectMapper.readValue(response.body(), Category[].class);
-            return Arrays.asList(categories);
+            Unit[] unit = objectMapper.readValue(response.body(), Unit[].class);
+            return Arrays.asList(unit);
         } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
             return new ArrayList<>();
         }
     }
 
-    private void updateTableView(List<Category> categoryList) {
-        ObservableList<Category> observableList = FXCollections.observableArrayList(categoryList);
+
+    private void updateTableView(List<Unit> unitList) {
+        // Update the TableView with the fetched data
+        ObservableList<Unit> observableList = FXCollections.observableArrayList(unitList);
         tblView.setItems(observableList);
     }
 
-    //delete category
+
+    // Delete unit
     @FXML
     void btnDelete(ActionEvent event) {
         String idText = txtId.getText();
 
         try {
             if (idText.isEmpty()) {
-                showAlert(null, "Error", "Please enter a valid category ID for deletion.");
+                showAlert("Error", "Please enter a valid unit ID for deletion.");
                 return;
             }
 
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/categories/" + idText))
+                    .uri(URI.create("http://localhost:8080/api/unit/" + idText))
                     .header("Content-Type", "application/json")
                     .DELETE()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            showAlert(response, "Delete Successful", "Category has been successfully deleted.");
+            showAlert("Delete Successful", "Unit has been successfully deleted.");
             loadDataAndSetToTable();
 
         } catch (Exception e) {
@@ -120,12 +125,10 @@ public class CategoryControllers {
         }
     }
 
-
-    // Update category
+    // Update unit
     @FXML
     void btnUpdate(ActionEvent event) {
-        loadDataAndSetToTable();
-        Category categoryDTO = new Category(
+        Unit unitDTO = new Unit(
                 txtId.getText(),
                 txtCode.getText(),
                 txtName.getText(),
@@ -134,13 +137,16 @@ public class CategoryControllers {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/categories"))
+                    .uri(URI.create("http://localhost:8080/api/unit"))
                     .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers.ofString(categoryDTOToJson(categoryDTO)))
+                    .PUT(HttpRequest.BodyPublishers.ofString(unitDTOToJson(unitDTO)))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            showAlert(response, "update Successful", "Category has been successfully updated.");
+
+            if (response.statusCode() == 200) {
+                showAlert("Update Successful", "Unit has been successfully updated.");
+            }
             loadDataAndSetToTable();
 
         } catch (IOException | InterruptedException e) {
@@ -148,12 +154,11 @@ public class CategoryControllers {
         }
     }
 
-    // Save category
+    // Save unit
     @FXML
     void btnSave(ActionEvent event) {
-        loadDataAndSetToTable();
-        // Create the Category object
-        Category categoryDTO = new Category(
+        // Create the Unit object
+        Unit unitDTO = new Unit(
                 null,
                 txtCode.getText(),
                 txtName.getText(),
@@ -163,14 +168,14 @@ public class CategoryControllers {
             HttpClient httpClient = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/categories"))
+                    .uri(URI.create("http://localhost:8080/api/unit"))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(categoryDTOToJson(categoryDTO)))
+                    .POST(HttpRequest.BodyPublishers.ofString(unitDTOToJson(unitDTO)))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            showAlert(response, "Save Successful", "Category has been successfully saved.");
+            showAlert("Save Successful", "Unit has been successfully saved.");
             loadDataAndSetToTable();
 
         } catch (Exception e) {
@@ -178,17 +183,16 @@ public class CategoryControllers {
         }
     }
 
-
-    private String categoryDTOToJson(Category categoryDTO) {
+    private String unitDTOToJson(Unit unitDTO) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(categoryDTO);
+            return objectMapper.writeValueAsString(unitDTO);
         } catch (Exception e) {
             return "{}";
         }
     }
 
-    private void showAlert(HttpResponse<String> response, String title, String contentText) {
+    private void showAlert(String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(title);
