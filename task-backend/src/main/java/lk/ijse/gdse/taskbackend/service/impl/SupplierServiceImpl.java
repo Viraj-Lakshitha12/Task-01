@@ -31,13 +31,23 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier updateSuppler(SupplierDTO supplierDTO) {
-        Optional<Supplier> byId = supplierRepo.findById(supplierDTO.getId());
-        if (byId.isEmpty()) {
+    public Supplier updateSuppler(SupplierDTO updatedSupplier) {
+        Optional<Supplier> existingSupplierOptional = supplierRepo.findById(String.valueOf(updatedSupplier.getId()));
+
+        if (existingSupplierOptional.isPresent()) {
+            Supplier existingSupplier = existingSupplierOptional.get();
+            // Update the fields
+            existingSupplier.setName(updatedSupplier.getName());
+            existingSupplier.setAddress(updatedSupplier.getAddress());
+            existingSupplier.setSupplierCode(updatedSupplier.getSupplierCode());
+            existingSupplier.setStatus(Supplier.Status.valueOf(updatedSupplier.getStatus()));
+
+            return supplierRepo.save(existingSupplier);
+        } else {
             return null;
         }
-        return supplierRepo.save(modelMapper.map(supplierDTO, Supplier.class));
     }
+
 
 
     @Override

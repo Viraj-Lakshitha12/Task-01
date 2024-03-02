@@ -28,9 +28,10 @@ public class SupplierController {
     }
 
     @GetMapping
-    public ResponseUtil getAllSuppliers() {
+    public List<Supplier> getAllSuppliers() {
         List<Supplier> allSuppliers = supplierService.getAllSuppliers();
-        return new ResponseUtil(200, "found all suppliers", allSuppliers);
+        //return new ResponseUtil(200, "found all suppliers", allSuppliers);
+        return allSuppliers;
     }
 
     @PutMapping
@@ -45,8 +46,8 @@ public class SupplierController {
         return new ResponseUtil(200, "find suppliers", supplierById);
     }
 
-    @DeleteMapping(params = {"id"})
-    public ResponseUtil deleteSupplier(@RequestParam String id) {
+    @DeleteMapping("/{id}")
+    public ResponseUtil deleteSupplier(@PathVariable String id) {
         supplierService.deleteSupplier(id);
         return new ResponseUtil(200, "found all suppliers", null);
     }
