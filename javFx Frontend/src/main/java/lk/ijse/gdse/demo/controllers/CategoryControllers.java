@@ -120,7 +120,10 @@ public class CategoryControllers {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            showAlert(response, "Delete Successful", "Category has been successfully deleted.");
+            System.out.println(response.body());
+            if (response.statusCode() == 200) {
+                showAlert(response, "Delete Successful", "Category has been successfully deleted.");
+            }
             loadDataAndSetToTable();
 
         } catch (Exception e) {
