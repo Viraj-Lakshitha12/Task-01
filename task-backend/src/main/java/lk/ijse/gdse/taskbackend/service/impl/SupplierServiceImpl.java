@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -49,15 +50,24 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
 
-
     @Override
     public List<Supplier> getAllSuppliers() {
         return supplierRepo.findAll();
     }
 
     @Override
-    public void deleteSupplier(String id) {
-        supplierRepo.deleteById(id);
+    public String deleteSupplier(String id) {
+        try {
+            Optional<Supplier> byId = supplierRepo.findById(id);
+            if (byId.isPresent()) {
+                supplierRepo.deleteById(id);
+                return "ok";
+            } else {
+                throw new NoSuchElementException("Supplier not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            return "error";
+        }
     }
 
     @Override

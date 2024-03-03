@@ -48,7 +48,12 @@ public class SupplierController {
 
     @DeleteMapping("/{id}")
     public ResponseUtil deleteSupplier(@PathVariable String id) {
-        supplierService.deleteSupplier(id);
-        return new ResponseUtil(200, "found all suppliers", null);
+        String result = supplierService.deleteSupplier(id);
+        if ("ok".equals(result)) {
+            return new ResponseUtil(200, "Supplier deleted successfully", null);
+        } else {
+            return new ResponseUtil(404, "Supplier not found or error during deletion", null);
+        }
     }
+
 }

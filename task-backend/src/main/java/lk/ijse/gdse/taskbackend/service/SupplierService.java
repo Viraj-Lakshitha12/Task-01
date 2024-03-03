@@ -13,7 +13,7 @@ public interface SupplierService {
 
     List<Supplier> getAllSuppliers();
 
-    void deleteSupplier(String id);
+    String deleteSupplier(String id);
 
     Optional<Supplier> findSupplierById(String id);
 
