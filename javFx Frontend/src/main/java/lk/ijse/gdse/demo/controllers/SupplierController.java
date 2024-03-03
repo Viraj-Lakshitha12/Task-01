@@ -104,8 +104,13 @@ public class SupplierController {
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
     }
 
+    //delete supplier
     @FXML
     void btnDelete(ActionEvent event) {
+        if (txtId.getText().isEmpty()) {
+            showAlert("Error", "Enter All Details");
+            return;
+        }
         String idText = txtId.getText();
 
         try {
@@ -134,6 +139,11 @@ public class SupplierController {
     //save supplier
     @FXML
     void btnSave(ActionEvent event) {
+        if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() ||
+                txtAddress.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert("Error", "Enter All Details");
+            return;
+        }
         Supplier supplierDTO = new Supplier(
                 null,
                 txtCode.getText(),
@@ -173,6 +183,12 @@ public class SupplierController {
     //update supplier
     @FXML
     void btnUpdate(ActionEvent event) {
+        if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() ||
+                txtAddress.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert("Error", "Enter All Details");
+            return;
+        }
+
         Supplier supplierDTO = new Supplier(
                 Long.parseLong(txtId.getText()),
                 txtCode.getText(),
@@ -213,10 +229,10 @@ public class SupplierController {
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT,pane);
+        Navigation.navigate(Routes.UNIT, pane);
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER,pane);
+        Navigation.navigate(Routes.SUPPLIER, pane);
     }
 }

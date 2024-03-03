@@ -20,7 +20,6 @@ public class AppInitializer extends Application {
         Parent window = FXMLLoader.load(resource);
         Scene scene = new Scene(window);
         stage.setScene(scene);
-        stage.setTitle("Category Form");
         stage.centerOnScreen();
 
 

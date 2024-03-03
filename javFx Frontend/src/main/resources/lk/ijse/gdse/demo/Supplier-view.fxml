@@ -68,17 +68,17 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <Button layoutX="180.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY">
+   <Button layoutX="204.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
    </Button>
-   <Button layoutX="335.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
+   <Button layoutX="359.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
    </Button>
-   <Button layoutX="452.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
+   <Button layoutX="476.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>

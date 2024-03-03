@@ -104,6 +104,10 @@ public class UnitController {
     // Delete unit
     @FXML
     void btnDelete(ActionEvent event) {
+        if (txtId.getText().isEmpty()) {
+            showAlert( "Error", "Enter Id");
+            return;
+        }
         String idText = txtId.getText();
 
         try {
@@ -132,6 +136,10 @@ public class UnitController {
     // Update unit
     @FXML
     void btnUpdate(ActionEvent event) {
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert("Error", "Enter All Details");
+            return;
+        }
         Unit unitDTO = new Unit(
                 txtId.getText(),
                 txtCode.getText(),
@@ -161,6 +169,10 @@ public class UnitController {
     // Save unit
     @FXML
     void btnSave(ActionEvent event) {
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert("Error", "Enter All Details");
+            return;
+        }
         // Create the Unit object
         Unit unitDTO = new Unit(
                 null,
@@ -205,14 +217,14 @@ public class UnitController {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY,pane);
+        Navigation.navigate(Routes.CATEGORY, pane);
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT,pane);
+        Navigation.navigate(Routes.UNIT, pane);
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER,pane);
+        Navigation.navigate(Routes.SUPPLIER, pane);
     }
 }

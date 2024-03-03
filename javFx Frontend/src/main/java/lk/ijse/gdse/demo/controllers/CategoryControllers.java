@@ -99,6 +99,10 @@ public class CategoryControllers {
     //delete category
     @FXML
     void btnDelete(ActionEvent event) {
+        if (txtId.getText().isEmpty()) {
+            showAlert(null, "Error", "Enter Id");
+            return;
+        }
         String idText = txtId.getText();
 
         try {
@@ -128,6 +132,11 @@ public class CategoryControllers {
     // Update category
     @FXML
     void btnUpdate(ActionEvent event) {
+        if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert(null, "Error", "Enter All Details");
+            return;
+        }
+
         loadDataAndSetToTable();
         Category categoryDTO = new Category(
                 txtId.getText(),
@@ -155,6 +164,11 @@ public class CategoryControllers {
     // Save category
     @FXML
     void btnSave(ActionEvent event) {
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+            showAlert(null, "Error", "Enter All Details");
+            return;
+        }
+
         loadDataAndSetToTable();
         // Create the Category object
         Category categoryDTO = new Category(
@@ -201,14 +215,14 @@ public class CategoryControllers {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY,pane);
+        Navigation.navigate(Routes.CATEGORY, pane);
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT,pane);
+        Navigation.navigate(Routes.UNIT, pane);
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER,pane);
+        Navigation.navigate(Routes.SUPPLIER, pane);
     }
 }

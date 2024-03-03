@@ -19,7 +19,7 @@ public class Navigation {
 
         switch (route) {
             case UNIT:
-                window.setTitle("Supplier Manage Form");
+                window.setTitle("Unit Manage Form");
                 initUI("Unit-view.fxml");
                 break;
             case SUPPLIER:
@@ -27,7 +27,7 @@ public class Navigation {
                 initUI("Supplier-view.fxml");
                 break;
             case CATEGORY:
-                window.setTitle("Supplier Manage Form");
+                window.setTitle("Category Manage Form");
                 initUI("Category-view.fxml");
                 break;
             default:
