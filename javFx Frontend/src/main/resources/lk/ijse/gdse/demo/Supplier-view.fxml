@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="607.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.demo.controllers.SupplierController">
+<AnchorPane fx:id="pane" prefHeight="607.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.demo.controllers.SupplierController">
     <Label alignment="CENTER" layoutX="333.0" layoutY="32.0" prefHeight="35.0" prefWidth="140.0" text="Supplier">
         <font>
             <Font name="System Bold" size="24.0" />
@@ -68,4 +68,19 @@
          <Font size="18.0" />
       </font>
    </Label>
+   <Button layoutX="180.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button layoutX="335.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button layoutX="452.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
 </AnchorPane>

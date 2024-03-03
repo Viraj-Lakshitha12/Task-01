@@ -10,7 +10,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.demo.dto.Unit;
+import lk.ijse.gdse.demo.util.Navigation;
+import lk.ijse.gdse.demo.util.Routes;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class UnitController {
 
+    public AnchorPane pane;
     @FXML
     private TableColumn<Unit, String> colCode;
 
@@ -198,5 +202,17 @@ public class UnitController {
         alert.setHeaderText(title);
         alert.setContentText(contentText);
         alert.showAndWait();
+    }
+
+    public void btnCategory(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.CATEGORY,pane);
+    }
+
+    public void btnUnit(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.UNIT,pane);
+    }
+
+    public void btnSupplier(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.SUPPLIER,pane);
     }
 }

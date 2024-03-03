@@ -8,61 +8,72 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="607.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="lk.ijse.gdse.demo.controllers.CategoryControllers">
+<AnchorPane fx:id="pane" prefHeight="607.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.demo.controllers.CategoryControllers">
    <Label alignment="CENTER" layoutX="333.0" layoutY="32.0" prefHeight="35.0" prefWidth="140.0" text="CATEGORY">
       <font>
-         <Font name="System Bold" size="24.0"/>
+         <Font name="System Bold" size="24.0" />
       </font>
    </Label>
-   <TextField fx:id="txtId" layoutX="30.0" layoutY="130.0" promptText="              enter Id"/>
-   <TextField fx:id="txtCode" layoutX="227.0" layoutY="131.0" promptText="             enter code"/>
-   <TextField fx:id="txtName" layoutX="417.0" layoutY="130.0" promptText="             enter name"/>
+   <TextField fx:id="txtId" layoutX="30.0" layoutY="130.0" promptText="              enter Id" />
+   <TextField fx:id="txtCode" layoutX="227.0" layoutY="131.0" promptText="             enter code" />
+   <TextField fx:id="txtName" layoutX="417.0" layoutY="130.0" promptText="             enter name" />
    <Label layoutX="31.0" layoutY="105.0" prefHeight="27.0" prefWidth="27.0" text="id">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </Label>
    <Label layoutX="227.0" layoutY="103.0" prefHeight="27.0" prefWidth="62.0" text="code">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </Label>
-   <TextField fx:id="txtStatus" layoutX="608.0" layoutY="131.0" promptText="        Active or Inactive"/>
+   <TextField fx:id="txtStatus" layoutX="608.0" layoutY="131.0" promptText="        Active or Inactive" />
    <Label layoutX="608.0" layoutY="103.0" prefHeight="27.0" prefWidth="62.0" text="status">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </Label>
    <Label layoutX="417.0" layoutY="104.0" prefHeight="27.0" prefWidth="62.0" text="Name">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </Label>
-   <Button layoutX="471.0" layoutY="198.0" mnemonicParsing="false" onAction="#btnSave"
-           style="-fx-background-radius: 10;" text="Save ">
+   <Button layoutX="471.0" layoutY="198.0" mnemonicParsing="false" onAction="#btnSave" style="-fx-background-radius: 10;" text="Save ">
       <font>
-         <Font name="System Bold" size="18.0"/>
+         <Font name="System Bold" size="18.0" />
       </font>
    </Button>
    <TableView fx:id="tblView" layoutX="14.0" layoutY="290.0" prefHeight="250.0" prefWidth="759.0">
       <columns>
-         <TableColumn fx:id="colId" prefWidth="155.20001220703125" text="Id"/>
-         <TableColumn fx:id="colCode" prefWidth="200.79998779296875" text="Code"/>
-         <TableColumn fx:id="colName" prefWidth="212.00006103515625" text="Name"/>
-         <TableColumn fx:id="colStatus" prefWidth="191.99993896484375" text="Status"/>
+         <TableColumn fx:id="colId" prefWidth="155.20001220703125" text="Id" />
+         <TableColumn fx:id="colCode" prefWidth="200.79998779296875" text="Code" />
+         <TableColumn fx:id="colName" prefWidth="212.00006103515625" text="Name" />
+         <TableColumn fx:id="colStatus" prefWidth="191.99993896484375" text="Status" />
       </columns>
    </TableView>
-   <Button layoutX="570.0" layoutY="197.0" mnemonicParsing="false" onAction="#btnUpdate"
-           style="-fx-background-radius: 10;" text="Update">
+   <Button layoutX="570.0" layoutY="197.0" mnemonicParsing="false" onAction="#btnUpdate" style="-fx-background-radius: 10;" text="Update">
       <font>
-         <Font name="System Bold" size="18.0"/>
+         <Font name="System Bold" size="18.0" />
       </font>
    </Button>
-   <Button layoutX="680.0" layoutY="196.0" mnemonicParsing="false" onAction="#btnDelete"
-           style="-fx-background-radius: 10;" text="Delete">
+   <Button layoutX="680.0" layoutY="196.0" mnemonicParsing="false" onAction="#btnDelete" style="-fx-background-radius: 10;" text="Delete">
       <font>
-         <Font name="System Bold" size="18.0"/>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button layoutX="205.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button layoutX="360.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button layoutX="477.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
+      <font>
+         <Font name="System Bold" size="18.0" />
       </font>
    </Button>
 </AnchorPane>
