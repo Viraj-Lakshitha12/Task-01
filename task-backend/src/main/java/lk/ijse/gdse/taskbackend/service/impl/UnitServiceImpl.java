@@ -66,4 +66,9 @@ public class UnitServiceImpl implements UnitService {
         return null;
     }
 
+    @Override
+    public List<String> getAllUnitNames() {
+        return unitRepo.findAllUnitNames();
+    }
+
 }

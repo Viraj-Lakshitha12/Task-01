@@ -13,4 +13,6 @@ public interface CategoryService {
     Optional<Category> findCategoryById(Long id);
 
     Category updateCategory(CategoryDTO categoryDTO);
+
+    List<String> getAllCategoryNames();
 }

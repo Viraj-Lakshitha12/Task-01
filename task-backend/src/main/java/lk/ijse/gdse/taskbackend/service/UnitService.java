@@ -16,4 +16,6 @@ public interface UnitService {
     Optional<Unit> findUnitById(String id);
 
     Unit updateUnit(UnitDTO unitDTO);
+
+    List<String> getAllUnitNames();
 }

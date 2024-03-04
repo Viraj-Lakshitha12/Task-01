@@ -16,5 +16,5 @@ public interface ItemService {
 
     Optional<Item> findItemById(Long id);
 
-    Category updateItem(ItemDTO itemDTO);
+    Item updateItem(ItemDTO itemDTO);
 }

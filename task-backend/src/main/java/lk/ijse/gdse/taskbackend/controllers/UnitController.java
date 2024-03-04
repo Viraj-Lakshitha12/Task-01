@@ -52,4 +52,9 @@ public class UnitController {
         return new ResponseUtil(200, "successfully Delete unit", null);
     }
 
+    @GetMapping(path = "/getNames")
+    public List<String> getAllNames() {
+        return unitService.getAllUnitNames();
+    }
+
 }

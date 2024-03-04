@@ -53,4 +53,10 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
+    @Override
+    public List<String> getAllCategoryNames() {
+        return categoryRepo.findAllCategoryNames();
+    }
+
+
 }

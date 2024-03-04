@@ -62,4 +62,9 @@ public class CategoryController {
         }
 
     }
+
+    @GetMapping(path = "/getNames")
+    public List<String> getAllNames() {
+        return categoryService.getAllCategoryNames();
+    }
 }

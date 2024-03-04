@@ -1,7 +1,6 @@
 package lk.ijse.gdse.taskbackend.service.impl;
 
 import lk.ijse.gdse.taskbackend.dto.ItemDTO;
-import lk.ijse.gdse.taskbackend.entity.Category;
 import lk.ijse.gdse.taskbackend.entity.Item;
 import lk.ijse.gdse.taskbackend.repository.ItemRepo;
 import lk.ijse.gdse.taskbackend.service.ItemService;
@@ -51,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Category updateItem(ItemDTO itemDTO) {
+    public Item updateItem(ItemDTO itemDTO) {
         Optional<Item> existingItem = itemRepo.findById(Long.valueOf(itemDTO.getId()));
         if (existingItem.isPresent()) {
             Item item = existingItem.get();
@@ -60,6 +59,8 @@ public class ItemServiceImpl implements ItemService {
             item.setCategory(itemDTO.getCategory());
             item.setUnit(itemDTO.getUnit());
             item.setStatus(Item.Status.valueOf(itemDTO.getStatus()));
+
+            return itemRepo.save(item);
         }
         return null;
     }
