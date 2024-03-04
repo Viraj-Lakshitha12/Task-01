@@ -60,11 +60,9 @@ public class Unit {
         this.status = status;
     }
 
-    // Other methods or overrides as needed
-
     @Override
     public String toString() {
-        return "Category{" +
+        return "Unit{" +
                 "id='" + id + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +

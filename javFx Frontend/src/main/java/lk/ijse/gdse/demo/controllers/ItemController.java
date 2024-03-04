@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.dto.Item;
+import lk.ijse.gdse.demo.dto.Unit;
 import lk.ijse.gdse.demo.util.Navigation;
 import lk.ijse.gdse.demo.util.Routes;
 
@@ -72,8 +74,8 @@ public class ItemController {
         setCellValueFactory();
         loadDataAndSetToTable();
         // Set items to ComboBoxes
-        cmbCategory.setItems(fetchDataForComboBox("http://localhost:8080/api/categories/getNames"));
-        cmbUnit.setItems(fetchDataForComboBox("http://localhost:8080/api/unit/getNames"));
+        cmbCategory.setItems(fetchDataForComboBox("http://localhost:8080/api/categories/getIds"));
+        cmbUnit.setItems(fetchDataForComboBox("http://localhost:8080/api/unit/getIds"));
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
     }
@@ -115,6 +117,91 @@ public class ItemController {
         tblView.setItems(observableList);
     }
 
+    private Unit fetchDataForSaveUnit(String url) {
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Unit data = objectMapper.readValue(response.body(), Unit.class);
+            return data;
+
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private Category fetchDataForSaveCategory(String url) {
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Category data = objectMapper.readValue(response.body(), Category.class);
+            return data;
+
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        return null;
+    }
+
+    @FXML
+    void btnSaveItem(ActionEvent event) {
+        String categoryValue = cmbCategory.getValue();
+        String cmbUnitValue = cmbUnit.getValue();
+
+        Unit unit = fetchDataForSaveUnit("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
+        Category category = fetchDataForSaveCategory("http://localhost:8080/api/categories/findById/" + categoryValue);
+        System.out.println(unit);
+        System.out.println(category);
+
+        if (category == null || unit == null) {
+            System.out.println("Error fetching category or unit data.");
+            return;
+        }
+
+        // Create an Item object with category and unit
+        Item item = new Item();
+        item.setId(txtId.getText());
+        item.setCode(txtCode.getText());
+        item.setName(txtName.getText());
+        item.setCategory(category);
+        item.setUnit(unit);
+        item.setStatus(cmbStatus.getValue());
+
+        // Convert the Item object to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        String itemJson;
+        try {
+            itemJson = objectMapper.writeValueAsString(item);
+        } catch (Exception e) {
+            System.out.println("Error converting Item to JSON: " + e.getMessage());
+            return;
+        }
+
+        // Send the JSON string to the backend
+        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "POST", itemJson);
+        loadDataAndSetToTable();
+        if (response.statusCode() == 200) {
+            showAlert(response, "Save Successful", "Item has been successfully Saved.");
+        }
+    }
+
+
     @FXML
     void btnDeleteItem(ActionEvent event) {
         String idText = txtId.getText();
@@ -144,50 +231,26 @@ public class ItemController {
         }
     }
 
-    @FXML
-    void btnSaveItem(ActionEvent event) {
-        // Create an Item object
-        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
-                cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
-
-        // Convert the Item object to a JSON string
-        ObjectMapper objectMapper = new ObjectMapper();
-        String itemJson;
-        try {
-            itemJson = objectMapper.writeValueAsString(item);
-        } catch (Exception e) {
-            System.out.println("Error converting Item to JSON: " + e.getMessage());
-            return;
-        }
-
-        // Send the JSON string to the backend
-        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "POST", itemJson);
-
-        loadDataAndSetToTable();
-        if (response.statusCode() == 200) {
-            showAlert(response, "Save Successful", "Item has been successfully Saved.");
-        }
-    }
 
     @FXML
     void btnUpdateItem(ActionEvent event) {
-        // Create an Item object
-        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
-                cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
-
-        System.out.println(item);
-        // Convert the Item object to a JSON string
-        ObjectMapper objectMapper = new ObjectMapper();
-        String itemJson;
-        try {
-            itemJson = objectMapper.writeValueAsString(item);
-        } catch (Exception e) {
-            System.out.println("Error converting Item to JSON: " + e.getMessage());
-            return;
-        }
-        // Send the JSON string to the backend
-        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "PUT", itemJson);
-        loadDataAndSetToTable();
+//        // Create an Item object
+//        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
+//                cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
+//
+//        System.out.println(item);
+//        // Convert the Item object to a JSON string
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String itemJson;
+//        try {
+//            itemJson = objectMapper.writeValueAsString(item);
+//        } catch (Exception e) {
+//            System.out.println("Error converting Item to JSON: " + e.getMessage());
+//            return;
+//        }
+//        // Send the JSON string to the backend
+//        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "PUT", itemJson);
+//        loadDataAndSetToTable();
     }
 
     // all data for combobox

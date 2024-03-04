@@ -9,14 +9,14 @@ public class Item {
     private String id;
     private String code;
     private String name;
-    private String category;
-    private String unit;
+    private Category category;
+    private Unit unit;
     private String status;
 
     public Item() {
     }
 
-    public Item(String id, String code, String name, String category, String unit, String status) {
+    public Item(String id, String code, String name, Category category, Unit unit, String status) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -49,19 +49,19 @@ public class Item {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public String getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
@@ -71,17 +71,5 @@ public class Item {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id='" + id + '\'' +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", unit='" + unit + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }
