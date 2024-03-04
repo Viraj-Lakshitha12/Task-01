@@ -234,23 +234,44 @@ public class ItemController {
 
     @FXML
     void btnUpdateItem(ActionEvent event) {
-//        // Create an Item object
-//        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
-//                cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
-//
-//        System.out.println(item);
-//        // Convert the Item object to a JSON string
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String itemJson;
-//        try {
-//            itemJson = objectMapper.writeValueAsString(item);
-//        } catch (Exception e) {
-//            System.out.println("Error converting Item to JSON: " + e.getMessage());
-//            return;
-//        }
-//        // Send the JSON string to the backend
-//        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "PUT", itemJson);
-//        loadDataAndSetToTable();
+        String categoryValue = cmbCategory.getValue();
+        String cmbUnitValue = cmbUnit.getValue();
+
+        Unit unit = fetchDataForSaveUnit("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
+        Category category = fetchDataForSaveCategory("http://localhost:8080/api/categories/findById/" + categoryValue);
+        System.out.println(unit);
+        System.out.println(category);
+
+        if (category == null || unit == null) {
+            System.out.println("Error fetching category or unit data.");
+            return;
+        }
+
+        // Create an Item object with category and unit
+        Item item = new Item();
+        item.setId(txtId.getText());
+        item.setCode(txtCode.getText());
+        item.setName(txtName.getText());
+        item.setCategory(category);
+        item.setUnit(unit);
+        item.setStatus(cmbStatus.getValue());
+
+        // Convert the Item object to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        String itemJson;
+        try {
+            itemJson = objectMapper.writeValueAsString(item);
+        } catch (Exception e) {
+            System.out.println("Error converting Item to JSON: " + e.getMessage());
+            return;
+        }
+
+        // Send the JSON string to the backend
+        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "PUT", itemJson);
+        loadDataAndSetToTable();
+        if (response.statusCode() == 200) {
+            showAlert(response, "Update Successful", "Item has been successfully updated.");
+        }
     }
 
     // all data for combobox
