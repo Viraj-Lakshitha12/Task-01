@@ -42,10 +42,11 @@ public class CategoryController {
         return new ResponseUtil(200, "Successfully deleted category", null);
     }
 
-    @GetMapping(value = "/findById", params = {"id"})
-    public ResponseUtil findCategoryById(@RequestParam Long id) {
+    @GetMapping(  "/findById/{id}")
+    public Category findCategoryById(@PathVariable Long id) {
         Optional<Category> categoryById = categoryService.findCategoryById(id);
-        return new ResponseUtil(200, "successfully find category", categoryById);
+        //return new ResponseUtil(200, "successfully find category", categoryById);
+        return categoryById.get();
     }
 
     @PutMapping
@@ -63,8 +64,8 @@ public class CategoryController {
 
     }
 
-    @GetMapping(path = "/getNames")
+    @GetMapping(path = "/getIds")
     public List<String> getAllNames() {
-        return categoryService.getAllCategoryNames();
+        return categoryService.getAllCategoryIds();
     }
 }

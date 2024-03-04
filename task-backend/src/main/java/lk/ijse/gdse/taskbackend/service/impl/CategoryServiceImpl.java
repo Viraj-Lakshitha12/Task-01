@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<String> getAllCategoryNames() {
+    public List<String> getAllCategoryIds() {
         return categoryRepo.findAllCategoryNames();
     }
 

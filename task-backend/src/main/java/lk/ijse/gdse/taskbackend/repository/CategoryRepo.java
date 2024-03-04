@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepo extends JpaRepository<Category, Long> {
     // Uncomment this method to retrieve all category names
-    @Query("SELECT c.name FROM Category c")
+    @Query("SELECT c.id FROM Category c")
     List<String> findAllCategoryNames();
 
     // Optionally, you can define a method to find a category by name

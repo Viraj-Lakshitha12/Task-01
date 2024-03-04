@@ -36,12 +36,12 @@ public class UnitServiceImpl implements UnitService {
     }
 
     @Override
-    public void deleteUnit(String id) {
+    public void deleteUnit(Long id) {
         unitRepo.deleteById(id);
     }
 
     @Override
-    public Optional<Unit> findUnitById(String id) {
+    public Optional<Unit> findUnitById(Long id) {
         Optional<Unit> byId = unitRepo.findById(id);
         if (byId.isEmpty()) {
             return null;
@@ -51,7 +51,7 @@ public class UnitServiceImpl implements UnitService {
 
     @Override
     public Unit updateUnit(UnitDTO unitDTO) {
-        Optional<Unit> optionalUnit = unitRepo.findById(unitDTO.getId());
+        Optional<Unit> optionalUnit = unitRepo.findById(Long.valueOf(unitDTO.getId()));
 
         if (optionalUnit.isPresent()) {
             Unit existingUnit = optionalUnit.get();
@@ -67,8 +67,8 @@ public class UnitServiceImpl implements UnitService {
     }
 
     @Override
-    public List<String> getAllUnitNames() {
-        return unitRepo.findAllUnitNames();
+    public List<String> findAllUnitIds() {
+        return unitRepo.findAllUnitIds();
     }
 
 }

@@ -40,21 +40,23 @@ public class UnitController {
         return allUnit;
     }
 
-    @GetMapping(path = "/getUnitById", params = {"id"})
-    public ResponseUtil getUnitById(@RequestParam String id) {
+    @GetMapping(path = "/getUnitById/{id}")
+    public Unit getUnitById(@PathVariable Long id) {
         Optional<Unit> unitById = unitService.findUnitById(id);
-        return new ResponseUtil(200, "found unit", unitById);
+//        return new ResponseUtil(200, "found unit", unitById);
+    return unitById.get();
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseUtil deleteUnitById(@PathVariable String id) {
+    public ResponseUtil deleteUnitById(@PathVariable Long id) {
         unitService.deleteUnit(id);
         return new ResponseUtil(200, "successfully Delete unit", null);
     }
 
-    @GetMapping(path = "/getNames")
+    @GetMapping(path = "/getIds")
     public List<String> getAllNames() {
-        return unitService.getAllUnitNames();
+        return unitService.findAllUnitIds();
     }
 
 }

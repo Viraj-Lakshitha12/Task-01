@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UnitRepo extends JpaRepository<Unit, String> {
-    @Query("SELECT u.name FROM Unit u")
-    List<String> findAllUnitNames();
+public interface UnitRepo extends JpaRepository<Unit, Long> {
+    @Query("SELECT u.id FROM Unit u")
+    List<String> findAllUnitIds();
 }

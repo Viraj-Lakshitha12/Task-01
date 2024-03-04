@@ -14,5 +14,5 @@ public interface CategoryService {
 
     Category updateCategory(CategoryDTO categoryDTO);
 
-    List<String> getAllCategoryNames();
+    List<String> getAllCategoryIds();
 }

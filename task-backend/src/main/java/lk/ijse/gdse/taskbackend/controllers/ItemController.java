@@ -22,6 +22,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseUtil saveItem(@RequestBody ItemDTO itemDTO) {
+        System.out.println(itemDTO);
         Item item = itemService.saveItem(itemDTO);
         return new ResponseUtil(200, "save Item", item);
     }
@@ -40,6 +41,6 @@ public class ItemController {
     @DeleteMapping("/{id}")
     public ResponseUtil deleteItem(@PathVariable Long id) {
         itemService.deleteItem(id);
-        return new ResponseUtil();
+        return new ResponseUtil(200, "Delete Success", null);
     }
 }

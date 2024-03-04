@@ -11,13 +11,23 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Item {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String code;
     private String name;
-    private String category;
-    private String unit;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
+
     @Enumerated(EnumType.STRING)
     private Status status = Status.Active;
+
     public enum Status {
         Active,
         Inactive

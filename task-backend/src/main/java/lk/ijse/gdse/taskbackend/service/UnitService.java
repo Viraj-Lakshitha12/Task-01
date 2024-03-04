@@ -11,11 +11,11 @@ public interface UnitService {
 
     List<Unit> getAllUnit();
 
-    void deleteUnit(String id);
+    void deleteUnit(Long id);
 
-    Optional<Unit> findUnitById(String id);
+    Optional<Unit> findUnitById(Long id);
 
     Unit updateUnit(UnitDTO unitDTO);
 
-    List<String> getAllUnitNames();
+    List<String> findAllUnitIds();
 }
