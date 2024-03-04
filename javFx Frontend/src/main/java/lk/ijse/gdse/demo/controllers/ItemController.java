@@ -164,7 +164,23 @@ public class ItemController {
 
     @FXML
     void btnUpdateItem(ActionEvent event) {
-        // Implement update logic here
+        // Create an Item object
+        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
+                cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
+
+        System.out.println(item);
+        // Convert the Item object to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        String itemJson;
+        try {
+            itemJson = objectMapper.writeValueAsString(item);
+        } catch (Exception e) {
+            System.out.println("Error converting Item to JSON: " + e.getMessage());
+            return;
+        }
+        // Send the JSON string to the backend
+        HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "PUT", itemJson);
+        loadDataAndSetToTable();
     }
 
     // all data for combobox

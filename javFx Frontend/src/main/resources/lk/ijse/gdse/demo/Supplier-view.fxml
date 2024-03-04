@@ -71,7 +71,7 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <Button layoutX="356.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY" textOverrun="WORD_ELLIPSIS">
+   <Button layoutX="343.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
@@ -86,7 +86,7 @@
          </Lighting>
       </effect>
    </Button>
-   <Button layoutX="496.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT" textOverrun="WORD_ELLIPSIS">
+   <Button layoutX="483.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
@@ -101,7 +101,7 @@
          </Lighting>
       </effect>
    </Button>
-   <Button layoutX="603.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER" textOverrun="WORD_ELLIPSIS">
+   <Button layoutX="590.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
@@ -116,7 +116,7 @@
          </Lighting>
       </effect>
    </Button>
-   <Button layoutX="99.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnNavigationItem" style="-fx-background-radius: 10;" text="ITEMS" textOverrun="WORD_ELLIPSIS">
+   <Button layoutX="86.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigationItem" style="-fx-background-radius: 10;" text="ITEMS" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
@@ -131,7 +131,7 @@
          </Lighting>
       </effect>
    </Button>
-   <Button layoutX="202.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnNavigateInventrory" style="-fx-background-radius: 10;" text="INVENTORY " textOverrun="WORD_ELLIPSIS">
+   <Button layoutX="189.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigateInventrory" style="-fx-background-radius: 10;" text="INVENTORY " textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
