@@ -5,6 +5,9 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -61,19 +64,79 @@
             <Font name="System Bold" size="18.0" />
         </font>
     </Button>
-   <Button layoutX="204.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY">
+   <Button layoutX="353.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
    </Button>
-   <Button layoutX="359.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
+   <Button layoutX="493.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
    </Button>
-   <Button layoutX="476.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
+   <Button layoutX="600.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER" textOverrun="WORD_ELLIPSIS">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="96.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnNavigationItem" style="-fx-background-radius: 10;" text="ITEMS" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="199.0" layoutY="553.0" mnemonicParsing="false" onAction="#btnNavigateInventory" style="-fx-background-radius: 10;" text="INVENTORY " textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
    </Button>
 </AnchorPane>

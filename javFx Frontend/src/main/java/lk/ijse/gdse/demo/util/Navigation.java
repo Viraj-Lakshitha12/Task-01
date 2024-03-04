@@ -30,6 +30,14 @@ public class Navigation {
                 window.setTitle("Category Manage Form");
                 initUI("Category-view.fxml");
                 break;
+            case INVENTORY:
+                window.setTitle("Inventory Manage Form");
+                initUI("Inventory-view.fxml");
+                break;
+            case ITEM:
+                window.setTitle("Item Manage Form");
+                initUI("Item-view.fxml");
+                break;
             default:
                 new Alert(Alert.AlertType.ERROR, "Not suitable UI found!").show();
         }

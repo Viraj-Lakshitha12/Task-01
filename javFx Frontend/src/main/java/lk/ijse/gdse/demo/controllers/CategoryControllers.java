@@ -228,4 +228,13 @@ public class CategoryControllers {
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
         Navigation.navigate(Routes.SUPPLIER, pane);
     }
+
+    public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.ITEM, pane);
+    }
+
+    public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.INVENTORY, pane);
+
+    }
 }

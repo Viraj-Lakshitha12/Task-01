@@ -26,18 +26,20 @@ import java.util.List;
 
 public class UnitController {
 
-    public AnchorPane pane;
     @FXML
-    private TableColumn<Unit, String> colCode;
+    private TableColumn<?, ?> colCode;
 
     @FXML
-    private TableColumn<Unit, String> colId;
+    private TableColumn<?, ?> colId;
 
     @FXML
-    private TableColumn<Unit, String> colName;
+    private TableColumn<?, ?> colName;
 
     @FXML
-    private TableColumn<Unit, String> colStatus;
+    private TableColumn<?, ?> colStatus;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private TableView<Unit> tblView;
@@ -53,6 +55,7 @@ public class UnitController {
 
     @FXML
     private TextField txtStatus;
+
 
     public void initialize() {
         setCellValueFactory();
@@ -226,5 +229,13 @@ public class UnitController {
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
         Navigation.navigate(Routes.SUPPLIER, pane);
+    }
+
+    public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.ITEM,pane);
+    }
+
+    public void btnNavigateInventory(ActionEvent actionEvent) throws IOException {
+        Navigation.navigate(Routes.INVENTORY,pane);
     }
 }

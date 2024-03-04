@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 public class AppInitializer extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        URL resource = this.getClass().getResource("Supplier-view.fxml");
+        URL resource = this.getClass().getResource("Unit-view.fxml");
         Parent window = FXMLLoader.load(resource);
         Scene scene = new Scene(window);
         stage.setScene(scene);

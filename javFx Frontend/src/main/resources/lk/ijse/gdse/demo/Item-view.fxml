@@ -6,6 +6,9 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -63,21 +66,6 @@
             <Font name="System Bold" size="18.0" />
         </font>
     </Button>
-   <Button layoutX="204.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnNavigateCategory" style="-fx-background-radius: 10;" text="CATEGORY">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-   </Button>
-   <Button layoutX="359.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnNavigateUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-   </Button>
-   <Button layoutX="476.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnNavigateSupplier" style="-fx-background-radius: 10;" text="SUPPLIER">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-   </Button>
    <ComboBox fx:id="cmbCategory" layoutX="607.0" layoutY="130.0" prefWidth="150.0" promptText="        select category" />
    <Label layoutX="229.0" layoutY="178.0" prefHeight="27.0" prefWidth="62.0" text="status">
       <font>
@@ -91,4 +79,79 @@
       </font>
    </Label>
    <ComboBox fx:id="cmbUnit" layoutX="29.0" layoutY="204.0" prefWidth="150.0" promptText="             select unit" />
+   <Button layoutX="341.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="481.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="588.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="84.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigationItem" style="-fx-background-radius: 10;" text="ITEMS" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
+   <Button layoutX="187.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigateInventrory" style="-fx-background-radius: 10;" text="INVENTORY " textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+      <effect>
+         <Lighting>
+            <bumpInput>
+               <Shadow />
+            </bumpInput>
+            <light>
+               <Light.Distant />
+            </light>
+         </Lighting>
+      </effect>
+   </Button>
 </AnchorPane>
