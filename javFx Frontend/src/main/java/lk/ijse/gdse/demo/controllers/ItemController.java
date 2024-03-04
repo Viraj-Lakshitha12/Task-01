@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.demo.dto.Item;
@@ -69,6 +66,7 @@ public class ItemController {
 
     @FXML
     private TextField txtName;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public void initialize() {
         setCellValueFactory();
@@ -96,8 +94,6 @@ public class ItemController {
 
     private List<Item> fetchDataFromBackend() {
         try {
-            HttpClient httpClient = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/items"))
                     .GET()
@@ -121,28 +117,37 @@ public class ItemController {
 
     @FXML
     void btnDeleteItem(ActionEvent event) {
-        // Implement delete logic here
-    }
+        String idText = txtId.getText();
 
-    @FXML
-    void btnNavigateCategory(ActionEvent event) {
-        // Implement navigation to category view logic here
-    }
+        try {
+            if (idText.isEmpty()) {
+                showAlert(null, "Error", "Please enter a valid Item ID for deletion.");
+                return;
+            }
+            HttpRequest.Builder builder = HttpRequest.newBuilder();
+            builder.uri(URI.create("http://localhost:8080/api/items/" + idText));
+            builder.header("Content-Type", "application/json");
+            builder.DELETE();
+            HttpRequest request = builder
+                    .build();
 
-    @FXML
-    void btnNavigateSupplier(ActionEvent event) {
-        // Implement navigation to supplier view logic here
-    }
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    @FXML
-    void btnNavigateUnit(ActionEvent event) {
-        // Implement navigation to unit view logic here
+            System.out.println(response.body());
+            if (response.statusCode() == 200) {
+                showAlert(response, "Delete Successful", "Category has been successfully deleted.");
+            }
+            loadDataAndSetToTable();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
     void btnSaveItem(ActionEvent event) {
         // Create an Item object
-        Item item = new Item(txtId.getId(), txtCode.getText(), txtName.getText(),
+        Item item = new Item(txtId.getText(), txtCode.getText(), txtName.getText(),
                 cmbCategory.getValue(), cmbUnit.getValue(), cmbStatus.getValue());
 
         // Convert the Item object to a JSON string
@@ -158,8 +163,10 @@ public class ItemController {
         // Send the JSON string to the backend
         HttpResponse<String> response = connectBackend("http://localhost:8080/api/items", "POST", itemJson);
 
-        // Handle the response
-        System.out.println(response.body());
+        loadDataAndSetToTable();
+        if (response.statusCode() == 200) {
+            showAlert(response, "Save Successful", "Item has been successfully Saved.");
+        }
     }
 
     @FXML
@@ -227,4 +234,13 @@ public class ItemController {
         Navigation.navigate(Routes.CATEGORY, pane);
 
     }
+
+    private void showAlert(HttpResponse<String> response, String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
 }
