@@ -64,4 +64,9 @@ public class ItemServiceImpl implements ItemService {
         }
         return null;
     }
+
+    @Override
+    public List<String> findAllItemIds() {
+        return itemRepo.findAllItemIds();
+    }
 }

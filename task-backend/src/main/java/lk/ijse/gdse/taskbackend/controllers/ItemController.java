@@ -43,4 +43,9 @@ public class ItemController {
         itemService.deleteItem(id);
         return new ResponseUtil(200, "Delete Success", null);
     }
+
+    @GetMapping("/getIds")
+    public List<String> getAllItemIds() {
+        return itemService.findAllItemIds();
+    }
 }

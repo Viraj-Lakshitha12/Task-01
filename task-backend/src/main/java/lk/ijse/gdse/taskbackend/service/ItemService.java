@@ -1,7 +1,6 @@
 package lk.ijse.gdse.taskbackend.service;
 
 import lk.ijse.gdse.taskbackend.dto.ItemDTO;
-import lk.ijse.gdse.taskbackend.entity.Category;
 import lk.ijse.gdse.taskbackend.entity.Item;
 
 import java.util.List;
@@ -17,4 +16,5 @@ public interface ItemService {
     Optional<Item> findItemById(Long id);
 
     Item updateItem(ItemDTO itemDTO);
+    List<String> findAllItemIds();
 }
