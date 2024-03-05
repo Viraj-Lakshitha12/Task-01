@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.IntegerStringConverter;
 import lk.ijse.gdse.demo.dto.Inventory;
 import lk.ijse.gdse.demo.dto.Item;
 import lk.ijse.gdse.demo.util.Navigation;
@@ -91,22 +92,11 @@ public class InventoryController {
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
 
-    @FXML
-    void btnSupplier(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnUnit(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnUpdate(ActionEvent event) {
-
-    }
-
     public void initialize() {
+
+        addValidationListener(txtId);
+        addNumericValidationListener(txtQty);
+
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
         ObservableList<String> list = FXCollections.observableArrayList("Pending", "Approved");
@@ -116,7 +106,30 @@ public class InventoryController {
         loadDataAndSetToTable();
     }
 
+    private void addValidationListener(TextField textField) {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            if (change.isAdded()) {
+                if (!change.getText().matches("\\d*")) {
+                    return null; // Reject non-numeric input
+                }
+            }
+            return change;
+        });
 
+        textField.setTextFormatter(textFormatter);
+    }
+
+    private void addNumericValidationListener(TextField textField) {
+        TextFormatter<Integer> textFormatter = new TextFormatter<>(
+                new IntegerStringConverter(), 0, c -> {
+            if (c.getControlNewText().matches("\\d*")) {
+                return c;
+            } else {
+                return null;
+            }
+        });
+        textField.setTextFormatter(textFormatter);
+    }
     private void setCellValueFactory() {
         colViewItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colItemName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -177,8 +190,13 @@ public class InventoryController {
     }
 
 
+//    save inventory
     @FXML
     void btnSave(ActionEvent event) {
+        if (!isInputValid()) {
+            return;
+        }
+
         Item item = cmbOnActionItemId(event);
         Long id = Long.parseLong(txtId.getText());
         LocalDate receivedDate = datePicker.getValue();
@@ -188,7 +206,6 @@ public class InventoryController {
 
         Inventory inventory = new Inventory(id, receivedDate, receivedQty, approvalStatus, status, item);
 
-        // Convert the Item object to a JSON string
         String inventoryJson = null;
         try {
             inventoryJson = objectMapper.writeValueAsString(inventory);
@@ -202,11 +219,115 @@ public class InventoryController {
         }
     }
 
+    @FXML
+    void btnSupplier(ActionEvent event) throws IOException {
+        Navigation.navigate(Routes.SUPPLIER,pane);
+    }
+
+    @FXML
+    void btnUnit(ActionEvent event) throws IOException {
+        Navigation.navigate(Routes.UNIT,pane);
+    }
+
+    @FXML
+    void btnUpdate(ActionEvent event) {
+        if (!isInputValid()) {
+            return;
+        }
+
+        Item item = cmbOnActionItemId(event);
+        Long id = Long.parseLong(txtId.getText());
+        LocalDate receivedDate = datePicker.getValue();
+        int receivedQty = Integer.parseInt(txtQty.getText());
+        String approvalStatus = cmbApprovalStatus.getValue();
+        String status = cmbStatus.getValue();
+
+        Inventory inventory = new Inventory(id, receivedDate, receivedQty, approvalStatus, status, item);
+
+        String inventoryJson = null;
+        try {
+            inventoryJson = objectMapper.writeValueAsString(inventory);
+            HttpResponse<String> response = connectBackend("http://localhost:8080/api/inventory", "PUT", inventoryJson);
+            if (response.statusCode() == 200) {
+                showAlert(response, "Update Successful", "Inventory has been successfully Updated.");
+            }
+            loadDataAndSetToTable();
+        } catch (IOException e) {
+            System.out.println("Error converting Inventory to JSON: " + e.getMessage());
+        }
+    }
+
+    private boolean isInputValid() {
+        return validateControl(txtId) &&
+                validateControl(txtQty) &&
+                validateControl(cmbApprovalStatus) &&
+                validateControl(cmbStatus) &&
+                validateControl(datePicker);
+    }
+
+//    validation
+    private boolean validateControl(Control control) {
+        if (control instanceof TextInputControl) {
+            return validateTextInputControl((TextInputControl) control);
+        } else if (control instanceof ComboBox<?>) {
+            return validateComboBox((ComboBox<?>) control);
+        } else if (control instanceof DatePicker) {
+            return validateDatePicker((DatePicker) control);
+        }
+        return false;
+    }
+
+//    validate txt inputs
+    private boolean validateTextInputControl(TextInputControl textInputControl) {
+        String text = textInputControl.getText().trim();
+        if (text.isEmpty()) {
+            setInvalidStyle(textInputControl);
+            return false;
+        } else {
+            setValidStyle(textInputControl);
+            return true;
+        }
+    }
+
+//    validate combobox
+    private boolean validateComboBox(ComboBox<?> comboBox) {
+        Object value = comboBox.getValue();
+        if (value == null || value.toString().trim().isEmpty()) {
+            setInvalidStyle(comboBox);
+            return false;
+        } else {
+            setValidStyle(comboBox);
+            return true;
+        }
+    }
+
+//    validate date picker
+    private boolean validateDatePicker(DatePicker datePicker) {
+        LocalDate value = datePicker.getValue();
+        if (value == null) {
+            setInvalidStyle(datePicker);
+            return false;
+        } else {
+            setValidStyle(datePicker);
+            return true;
+        }
+    }
+
+    private void setInvalidStyle(Control control) {
+        control.setStyle("-fx-border-color: red;");
+    }
+
+    private void setValidStyle(Control control) {
+        control.setStyle("-fx-border-color: green;");
+    }
+
+//    load all data for the table
     private void loadDataAndSetToTable() {
         List<Inventory> itemList = fetchDataFromBackend();
         updateTableView(itemList);
     }
 
+//    update table
     private void updateTableView(List<Inventory> itemList) {
         ObservableList<Inventory> observableList = FXCollections.observableArrayList(itemList);
         tblView.setItems(observableList);
@@ -225,7 +346,6 @@ public class InventoryController {
             objectMapper.registerModule(new JavaTimeModule());  // Registering the JavaTimeModule
 
             Inventory[] inventories = objectMapper.readValue(response.body(), Inventory[].class);
-            System.out.println(Arrays.toString(inventories));
             return Arrays.asList(inventories);
 
         } catch (Exception e) {
@@ -261,7 +381,7 @@ public class InventoryController {
 
     public Item cmbOnActionItemId(ActionEvent actionEvent) {
         String cmbUnitValue = cmbItemId.getValue();
-        return fetchItemData("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
+        return fetchItemData("http://localhost:8080/api/items/findById/" + cmbUnitValue);
     }
 
     private void showAlert(HttpResponse<String> response, String title, String contentText) {

@@ -21,8 +21,6 @@ public class AppInitializer extends Application {
         Scene scene = new Scene(window);
         stage.setScene(scene);
         stage.centerOnScreen();
-
-
         stage.show();
     }
 
