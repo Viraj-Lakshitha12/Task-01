@@ -72,4 +72,16 @@ public class Item {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", unit=" + unit +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

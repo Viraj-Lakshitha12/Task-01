@@ -1,25 +1,35 @@
 package lk.ijse.gdse.demo.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.demo.dto.Inventory;
 import lk.ijse.gdse.demo.dto.Item;
+import lk.ijse.gdse.demo.util.Navigation;
+import lk.ijse.gdse.demo.util.Routes;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static lk.ijse.gdse.demo.util.ConnectToBackend.connectBackend;
 
 public class InventoryController {
 
+    public DatePicker datePicker;
+    public TableColumn colViewItemId;
     @FXML
     private ComboBox<String> cmbApprovalStatus;
 
@@ -39,7 +49,7 @@ public class InventoryController {
     private TableColumn<?, ?> colId;
 
     @FXML
-    private TableColumn<?, ?> colItemCategory;
+    private TableColumn<?, ?> colCategory;
 
     @FXML
     private TableColumn<?, ?> colItemCode;
@@ -66,7 +76,7 @@ public class InventoryController {
     private AnchorPane pane;
 
     @FXML
-    private TableView<?> tblView;
+    private TableView<Inventory> tblView;
 
     @FXML
     private TableView<Item> tblViewItems;
@@ -77,22 +87,55 @@ public class InventoryController {
     @FXML
     private TextField txtQty;
 
-    public void initialize(){
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+
+    @FXML
+    void btnSupplier(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnUnit(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnUpdate(ActionEvent event) {
+
+    }
+
+    public void initialize() {
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
         ObservableList<String> list = FXCollections.observableArrayList("Pending", "Approved");
         cmbApprovalStatus.setItems(list);
         setCellValueFactory();
         cmbItemId.setItems(fetchDataForComboBox("http://localhost:8080/api/items/getIds"));
+        loadDataAndSetToTable();
     }
+
+
     private void setCellValueFactory() {
-        colItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colViewItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colItemName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
-        colItemCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colItemUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
         colItemStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        colItemId.setCellValueFactory(new PropertyValueFactory<>("item"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("receivedDate"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
+        colApproval_status.setCellValueFactory(new PropertyValueFactory<>("approvalStatus"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+
     }
+
     private ObservableList<String> fetchDataForComboBox(String url) {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -115,44 +158,83 @@ public class InventoryController {
 
 
     @FXML
-    void btnCategory(ActionEvent event) {
-
+    void btnCategory(ActionEvent event) throws IOException {
+        Navigation.navigate(Routes.CATEGORY, pane);
     }
 
     @FXML
     void btnDelete(ActionEvent event) {
-
     }
 
     @FXML
-    void btnNavigateInventrory(ActionEvent event) {
-
+    void btnNavigateInventrory(ActionEvent event) throws IOException {
+        Navigation.navigate(Routes.INVENTORY, pane);
     }
 
     @FXML
-    void btnNavigationItem(ActionEvent event) {
-
+    void btnNavigationItem(ActionEvent event) throws IOException {
+        Navigation.navigate(Routes.ITEM, pane);
     }
+
 
     @FXML
     void btnSave(ActionEvent event) {
+        Item item = cmbOnActionItemId(event);
+        Long id = Long.parseLong(txtId.getText());
+        LocalDate receivedDate = datePicker.getValue();
+        int receivedQty = Integer.parseInt(txtQty.getText());
+        String approvalStatus = cmbApprovalStatus.getValue();
+        String status = cmbStatus.getValue();
 
+        Inventory inventory = new Inventory(id, receivedDate, receivedQty, approvalStatus, status, item);
+
+        // Convert the Item object to a JSON string
+        String inventoryJson = null;
+        try {
+            inventoryJson = objectMapper.writeValueAsString(inventory);
+            HttpResponse<String> response = connectBackend("http://localhost:8080/api/inventory", "POST", inventoryJson);
+            if (response.statusCode() == 200) {
+                showAlert(response, "Save Successful", "Inventory has been successfully Saved.");
+            }
+            loadDataAndSetToTable();
+        } catch (IOException e) {
+            System.out.println("Error converting Item to JSON: " + e.getMessage());
+        }
     }
 
-    @FXML
-    void btnSupplier(ActionEvent event) {
-
+    private void loadDataAndSetToTable() {
+        List<Inventory> itemList = fetchDataFromBackend();
+        updateTableView(itemList);
     }
 
-    @FXML
-    void btnUnit(ActionEvent event) {
-
+    private void updateTableView(List<Inventory> itemList) {
+        ObservableList<Inventory> observableList = FXCollections.observableArrayList(itemList);
+        tblView.setItems(observableList);
     }
 
-    @FXML
-    void btnUpdate(ActionEvent event) {
+    private List<Inventory> fetchDataFromBackend() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/api/inventory"))
+                    .GET()
+                    .build();
 
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());  // Registering the JavaTimeModule
+
+            Inventory[] inventories = objectMapper.readValue(response.body(), Inventory[].class);
+            System.out.println(Arrays.toString(inventories));
+            return Arrays.asList(inventories);
+
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
+
+
     private Item fetchItemData(String url) {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -181,4 +263,13 @@ public class InventoryController {
         String cmbUnitValue = cmbItemId.getValue();
         return fetchItemData("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
     }
+
+    private void showAlert(HttpResponse<String> response, String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
 }

@@ -42,7 +42,7 @@
     </Button>
     <TableView fx:id="tblView" layoutX="16.0" layoutY="416.0" prefHeight="206.0" prefWidth="759.0">
         <columns>
-            <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Id" />
+            <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Inventory Id" />
             <TableColumn fx:id="colItemId" prefWidth="135.2000732421875" text="Item id" />
             <TableColumn fx:id="colDate" prefWidth="127.20001220703125" text="Date" />
             <TableColumn fx:id="colQty" prefWidth="140.79998779296875" text="Qty" />
@@ -157,10 +157,10 @@
    <DatePicker fx:id="datePicker" layoutX="210.0" layoutY="130.0" />
    <TableView fx:id="tblViewItems" layoutX="14.0" layoutY="256.0" prefHeight="70.0" prefWidth="759.0">
       <columns>
-         <TableColumn fx:id="colItemId" prefWidth="94.4000244140625" text="Id" />
+         <TableColumn fx:id="colViewItemId" prefWidth="94.4000244140625" text="Id" />
          <TableColumn fx:id="colItemCode" prefWidth="135.2000732421875" text="Code" />
          <TableColumn fx:id="colItemName" prefWidth="127.20001220703125" text="Name" />
-         <TableColumn fx:id="colItemCategory" prefWidth="140.79998779296875" text="Category" />
+         <TableColumn fx:id="colCategory" prefWidth="140.79998779296875" text="Category" />
          <TableColumn fx:id="colItemUnit" prefWidth="137.5999755859375" text="Unit" />
          <TableColumn fx:id="colItemStatus" prefWidth="120.79997558593755" text="Status" />
       </columns>
