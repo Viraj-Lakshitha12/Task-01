@@ -96,7 +96,11 @@ public class InventoryController {
 
         addValidationListener(txtId);
         addNumericValidationListener(txtQty);
-
+        tblView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
         ObservableList<String> list = FXCollections.observableArrayList("Pending", "Approved");
@@ -104,6 +108,24 @@ public class InventoryController {
         setCellValueFactory();
         cmbItemId.setItems(fetchDataForComboBox("http://localhost:8080/api/items/getIds"));
         loadDataAndSetToTable();
+    }
+
+    private void handleTableClick() {
+        // Get the selected inventory item from the table
+        Inventory selectedInventory = tblView.getSelectionModel().getSelectedItem();
+
+        if (selectedInventory != null) {
+            txtId.setText(String.valueOf(selectedInventory.getId()));
+            datePicker.setValue(selectedInventory.getReceivedDate());
+            txtQty.setText(String.valueOf(selectedInventory.getReceivedQty()));
+            cmbApprovalStatus.setValue(selectedInventory.getApprovalStatus());
+            cmbStatus.setValue(selectedInventory.getStatus());
+
+            String itemId = String.valueOf(selectedInventory.getItem().getId());
+            cmbItemId.setValue(itemId);
+
+
+        }
     }
 
     private void addValidationListener(TextField textField) {
@@ -229,6 +251,7 @@ public class InventoryController {
         Navigation.navigate(Routes.UNIT,pane);
     }
 
+    //update inventory
     @FXML
     void btnUpdate(ActionEvent event) {
         if (!isInputValid()) {
