@@ -1,8 +1,12 @@
 package lk.ijse.gdse.taskbackend.service.impl;
 
 import lk.ijse.gdse.taskbackend.dto.ItemDTO;
+import lk.ijse.gdse.taskbackend.entity.Category;
 import lk.ijse.gdse.taskbackend.entity.Item;
+import lk.ijse.gdse.taskbackend.entity.Unit;
+import lk.ijse.gdse.taskbackend.repository.CategoryRepo;
 import lk.ijse.gdse.taskbackend.repository.ItemRepo;
+import lk.ijse.gdse.taskbackend.repository.UnitRepo;
 import lk.ijse.gdse.taskbackend.service.ItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +19,44 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
     @Autowired
     private final ItemRepo itemRepo;
+    @Autowired
+    private final CategoryRepo categoryRepo;
+    @Autowired
+    private final UnitRepo unitRepo;
 
     @Autowired
     private final ModelMapper modelMapper;
 
-    public ItemServiceImpl(ItemRepo itemRepo, ModelMapper modelMapper) {
+    public ItemServiceImpl(ItemRepo itemRepo, CategoryRepo categoryRepo, UnitRepo unitRepo, ModelMapper modelMapper) {
         this.itemRepo = itemRepo;
+        this.categoryRepo = categoryRepo;
+        this.unitRepo = unitRepo;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public Item saveItem(ItemDTO itemDTO) {
-        return itemRepo.save(modelMapper.map(itemDTO, Item.class));
+        // Fetch or create Category entity
+        Category category = categoryRepo.findById(itemDTO.getCategory().getId()).orElse(new Category());
+
+        // Fetch or create Unit entity
+        Unit unit = unitRepo.findById(itemDTO.getUnit().getId()).orElse(new Unit());
+
+        Item item = new Item();
+        item.setId(itemDTO.getId());
+        item.setName(itemDTO.getName());
+        item.setCode(itemDTO.getCode());
+        item.setCategory(category);
+        item.setUnit(unit);
+        item.setStatus(Item.Status.valueOf(itemDTO.getStatus()));
+
+        // Merge or persist Category and Unit
+        categoryRepo.save(category);
+        unitRepo.save(unit);
+
+        return itemRepo.save(item);
     }
+
 
     @Override
     public List<Item> getAllItems() {

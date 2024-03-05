@@ -22,14 +22,16 @@ public class InventoryController {
 
     @PostMapping
     public ResponseUtil saveInventory(@RequestBody InventoryDTO inventoryDTO) {
+        System.out.println(inventoryDTO);
         Inventory inventory = inventoryService.saveInventory(inventoryDTO);
         return new ResponseUtil(200, "Saved inventory", inventory);
     }
 
     @GetMapping
-    public ResponseUtil getAllInventories() {
+    public List<InventoryDTO> getAllInventories() {
         List<InventoryDTO> inventories = inventoryService.getAllInventories();
-        return new ResponseUtil(200, "Retrieved all inventories", inventories);
+        //return new ResponseUtil(200, "Retrieved all inventories", inventories);
+        return inventories;
     }
 
     @PutMapping

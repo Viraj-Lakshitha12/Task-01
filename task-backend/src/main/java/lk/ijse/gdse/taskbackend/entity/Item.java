@@ -9,29 +9,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "item")
+@Table(name = "tbl_master_item")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String code;
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
-
-
     @Enumerated(EnumType.STRING)
-    private Status status = Status.Active;
+    private Status status;
 
     public enum Status {
         Active,
         Inactive
     }
+
 }
+
