@@ -44,6 +44,11 @@ public class ItemController {
         return new ResponseUtil(200, "Delete Success", null);
     }
 
+    @GetMapping("findById/{id}")
+    public Item findItemById(@PathVariable Long id) {
+        return itemService.findItemById(id).get();
+    }
+
     @GetMapping("/getIds")
     public List<String> getAllItemIds() {
         return itemService.findAllItemIds();

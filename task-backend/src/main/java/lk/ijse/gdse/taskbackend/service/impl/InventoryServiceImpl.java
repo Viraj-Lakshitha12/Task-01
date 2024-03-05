@@ -33,21 +33,22 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Inventory updateInventory(InventoryDTO inventoryDTO) {
-        Optional<Inventory> optionalInventory = inventoryRepo.findById(Long.valueOf(inventoryDTO.getId()));
+        Long inventoryId = Long.valueOf(inventoryDTO.getId());
 
-        if (optionalInventory.isPresent()) {
-            Inventory existingInventory = optionalInventory.get();
-            existingInventory.setItem(modelMapper.map(inventoryDTO, Item.class));
-            existingInventory.setReceivedQty(inventoryDTO.getReceivedQty());
-            existingInventory.setReceivedDate(inventoryDTO.getReceivedDate());
-            existingInventory.setStatus(Inventory.Status.valueOf(inventoryDTO.getStatus()));
-            existingInventory.setApprovalStatus(Inventory.ApprovalStatus.valueOf(inventoryDTO.getApprovalStatus()));
 
-            return inventoryRepo.save(existingInventory);
-        } else {
-            throw new RuntimeException("Inventory not found with ID: " + inventoryDTO.getId());
-        }
+        Inventory existingInventory = inventoryRepo.findById(inventoryId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found with ID: " + inventoryDTO.getId()));
+
+        existingInventory.setItem(modelMapper.map(inventoryDTO, Item.class));
+        existingInventory.setReceivedQty(inventoryDTO.getReceivedQty());
+        existingInventory.setReceivedDate(inventoryDTO.getReceivedDate());
+        existingInventory.setStatus(Inventory.Status.valueOf(inventoryDTO.getStatus()));
+        existingInventory.setApprovalStatus(Inventory.ApprovalStatus.valueOf(inventoryDTO.getApprovalStatus()));
+
+        // Save and return the updated inventory
+        return inventoryRepo.save(existingInventory);
     }
+
 
     @Override
     public String deleteInventory(Long id) {

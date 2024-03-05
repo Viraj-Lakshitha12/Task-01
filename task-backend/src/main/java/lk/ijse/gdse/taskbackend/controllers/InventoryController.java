@@ -36,6 +36,7 @@ public class InventoryController {
 
     @PutMapping
     public ResponseUtil updateInventory(@RequestBody InventoryDTO inventoryDTO) {
+        System.out.println(inventoryDTO);
         Inventory updatedInventory = inventoryService.updateInventory(inventoryDTO);
         return new ResponseUtil(200, "Updated inventory", updatedInventory);
     }
