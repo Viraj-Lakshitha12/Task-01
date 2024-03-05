@@ -13,7 +13,6 @@ import lk.ijse.gdse.demo.util.Routes;
 import java.io.IOException;
 
 public class InventoryController {
-
     @FXML
     private ComboBox<?> cmbApprovalStatus;
 
@@ -24,22 +23,22 @@ public class InventoryController {
     private ComboBox<?> cmbStatus;
 
     @FXML
-    private TableColumn<?, ?> colCategory;
+    private TableColumn<?, ?> colApproval_status;
 
     @FXML
-    private TableColumn<?, ?> colCode;
+    private TableColumn<?, ?> colDate;
 
     @FXML
     private TableColumn<?, ?> colId;
 
     @FXML
-    private TableColumn<?, ?> colName;
+    private TableColumn<?, ?> colItemId;
+
+    @FXML
+    private TableColumn<?, ?> colQty;
 
     @FXML
     private TableColumn<?, ?> colStatus;
-
-    @FXML
-    private TableColumn<?, ?> colUnit;
 
     @FXML
     private AnchorPane pane;

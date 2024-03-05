@@ -43,10 +43,10 @@
     <TableView fx:id="tblView" layoutX="14.0" layoutY="290.0" prefHeight="250.0" prefWidth="759.0">
         <columns>
             <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Id" />
-            <TableColumn fx:id="colCode" prefWidth="135.2000732421875" text="Code" />
-            <TableColumn fx:id="colName" prefWidth="127.20001220703125" text="Name" />
-            <TableColumn fx:id="colCategory" prefWidth="140.79998779296875" text="Category" />
-         <TableColumn fx:id="colUnit" prefWidth="137.5999755859375" text="Unit" />
+            <TableColumn fx:id="colItemId" prefWidth="135.2000732421875" text="Item id" />
+            <TableColumn fx:id="colDate" prefWidth="127.20001220703125" text="Date" />
+            <TableColumn fx:id="colQty" prefWidth="140.79998779296875" text="Qty" />
+         <TableColumn fx:id="colApproval_status" prefWidth="137.5999755859375" text="approval_status" />
          <TableColumn fx:id="colStatus" prefWidth="120.79997558593755" text="Status" />
         </columns>
     </TableView>

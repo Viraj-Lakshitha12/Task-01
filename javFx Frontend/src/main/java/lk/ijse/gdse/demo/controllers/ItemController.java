@@ -67,6 +67,24 @@ public class ItemController {
     private TextField txtId;
 
     @FXML
+    private Label lblStatus;
+
+    @FXML
+    private Label lblUnitCode;
+    @FXML
+    private Label lblUnitName;
+
+    @FXML
+    private Label lblCategoryCode;
+
+    @FXML
+    private Label lblCategoryName;
+
+    @FXML
+    private Label lblCategoryStatus;
+
+
+    @FXML
     private TextField txtName;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -127,9 +145,11 @@ public class ItemController {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
             ObjectMapper objectMapper = new ObjectMapper();
             Unit data = objectMapper.readValue(response.body(), Unit.class);
+            lblUnitCode.setText(data.getCode());
+            lblStatus.setText(data.getStatus());
+            lblUnitName.setText(data.getName());
             return data;
 
         } catch (Exception e) {
@@ -151,6 +171,9 @@ public class ItemController {
 
             ObjectMapper objectMapper = new ObjectMapper();
             Category data = objectMapper.readValue(response.body(), Category.class);
+            lblCategoryStatus.setText((data.getStatus()));
+            lblCategoryCode.setText(data.getCode());
+            lblCategoryName.setText(data.getName());
             return data;
 
         } catch (Exception e) {
@@ -159,15 +182,11 @@ public class ItemController {
         return null;
     }
 
+
     @FXML
     void btnSaveItem(ActionEvent event) {
-        String categoryValue = cmbCategory.getValue();
-        String cmbUnitValue = cmbUnit.getValue();
-
-        Unit unit = fetchDataForSaveUnit("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
-        Category category = fetchDataForSaveCategory("http://localhost:8080/api/categories/findById/" + categoryValue);
-        System.out.println(unit);
-        System.out.println(category);
+        Category category = cmbOnActionCategory(event);
+        Unit unit = cmbOnActionUnit(event);
 
         if (category == null || unit == null) {
             System.out.println("Error fetching category or unit data.");
@@ -327,4 +346,13 @@ public class ItemController {
         alert.showAndWait();
     }
 
+    public Unit cmbOnActionUnit(ActionEvent actionEvent) {
+        String cmbUnitValue = cmbUnit.getValue();
+        return fetchDataForSaveUnit("http://localhost:8080/api/unit/getUnitById/" + cmbUnitValue);
+    }
+
+    public Category cmbOnActionCategory(ActionEvent actionEvent) {
+        String categoryValue = cmbCategory.getValue();
+        return fetchDataForSaveCategory("http://localhost:8080/api/categories/findById/" + categoryValue);
+    }
 }
