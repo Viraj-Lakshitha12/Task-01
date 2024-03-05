@@ -5,12 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.IntegerStringConverter;
 import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.util.Navigation;
 import lk.ijse.gdse.demo.util.Routes;
@@ -27,6 +25,7 @@ import java.util.List;
 public class CategoryControllers {
 
     public AnchorPane pane;
+    public ComboBox cmbStatus;
     @FXML
     private TableColumn<Category, String> colCode;
 
@@ -57,7 +56,23 @@ public class CategoryControllers {
     public void initialize() {
         setCellValueFactory();
         loadDataAndSetToTable();
+        addNumericValidationListener(txtId);
+        ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
+        cmbStatus.setItems(statusList);
     }
+
+    private void addNumericValidationListener(TextField textField) {
+        TextFormatter<Integer> textFormatter = new TextFormatter<>(
+                new IntegerStringConverter(), 0, c -> {
+            if (c.getControlNewText().matches("\\d*")) {
+                return c;
+            } else {
+                return null;
+            }
+        });
+        textField.setTextFormatter(textFormatter);
+    }
+
 
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -135,7 +150,7 @@ public class CategoryControllers {
     // Update category
     @FXML
     void btnUpdate(ActionEvent event) {
-        if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+        if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty()) {
             showAlert(null, "Error", "Enter All Details");
             return;
         }
@@ -145,7 +160,7 @@ public class CategoryControllers {
                 txtId.getText(),
                 txtCode.getText(),
                 txtName.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
         );
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -164,10 +179,61 @@ public class CategoryControllers {
         }
     }
 
+    private boolean validateControl(Control control) {
+        if (control instanceof TextInputControl) {
+            return validateTextInputControl((TextInputControl) control);
+        }
+        return false;
+    }
+
+    private boolean validateTextInputControl(TextInputControl textInputControl) {
+        String text = textInputControl.getText().trim();
+        if (text.isEmpty()) {
+            setInvalidStyle(textInputControl);
+            return false;
+        } else {
+            setValidStyle(textInputControl);
+            return true;
+        }
+    }
+
+    private void setInvalidStyle(Control control) {
+        control.setStyle("-fx-border-color: red;");
+    }
+
+    private void setValidStyle(Control control) {
+        control.setStyle("-fx-border-color: green;");
+    }
+
+    private boolean isInputValid() {
+        boolean isIdValid = validateControl(txtId);
+        boolean isCodeValid = validateControl(txtCode);
+        boolean isNameValid = validateControl(txtName);
+
+        if (!isIdValid) {
+            setInvalidStyle(txtId);
+        }
+
+        if (!isCodeValid) {
+            setInvalidStyle(txtCode);
+        }
+
+        if (!isNameValid) {
+            setInvalidStyle(txtName);
+        }
+
+
+        return isIdValid && isCodeValid && isNameValid ;
+    }
+
     // Save category
     @FXML
     void btnSave(ActionEvent event) {
-        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+        if (!isInputValid()) {
+            return;
+        }
+
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty()) {
             showAlert(null, "Error", "Enter All Details");
             return;
         }
@@ -178,8 +244,9 @@ public class CategoryControllers {
                 null,
                 txtCode.getText(),
                 txtName.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
         );
+        System.out.println(categoryDTO);
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
 

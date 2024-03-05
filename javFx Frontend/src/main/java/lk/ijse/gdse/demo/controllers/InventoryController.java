@@ -93,7 +93,6 @@ public class InventoryController {
 
 
     public void initialize() {
-
         addValidationListener(txtId);
         addNumericValidationListener(txtQty);
         tblView.setOnMouseClicked(event -> {
