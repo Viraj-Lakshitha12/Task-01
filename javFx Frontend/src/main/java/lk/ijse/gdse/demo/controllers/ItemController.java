@@ -95,6 +95,23 @@ public class ItemController {
         cmbUnit.setItems(fetchDataForComboBox("http://localhost:8080/api/unit/getIds"));
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
+
+        setupRowSelectionListener();
+    }
+
+    // Set data of the selected row to text fields and combo boxes
+    private void setupRowSelectionListener() {
+
+        tblView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtId.setText(newValue.getId());
+                txtCode.setText(newValue.getCode());
+                txtName.setText(newValue.getName());
+                cmbCategory.setValue(newValue.getCategory().getId());
+                cmbUnit.setValue(newValue.getUnit().getId());
+                cmbStatus.setValue(newValue.getStatus());
+            }
+        });
     }
 
     private boolean isInputValid() {
