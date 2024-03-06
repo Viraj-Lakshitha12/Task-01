@@ -7,8 +7,6 @@ import lk.ijse.gdse.taskbackend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/user")
@@ -22,13 +20,15 @@ public class UserController {
 
     @PostMapping
     public ResponseUtil saveUser(@RequestBody UserDTO userDTO) {
-        Optional<User> findUser = userService.findUser(userDTO.getUserName());
-        if (findUser.isPresent()) {
-            return new ResponseUtil(500, "alredy exsist user", findUser.get());
-        }
+        System.out.println(userDTO);
         User user = userService.saveUser(userDTO);
-        return new ResponseUtil(200,"successfully save",user);
+        return new ResponseUtil(200, "successfully save", user);
     }
 
 
+    @GetMapping("/{userName}")
+    public ResponseUtil getUserDetails(@PathVariable String userName) {
+        User userByName = userService.findUserByName(userName);
+        return new ResponseUtil(200,"find user",userByName);
+    }
 }

@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface UserService {
     User saveUser(UserDTO userDTO);
 
-    Optional<User> findUser(String name);
+    Optional<User> findUser(Long name);
+    User findUserByName(String name);
 }
