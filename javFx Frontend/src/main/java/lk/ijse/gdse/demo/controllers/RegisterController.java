@@ -56,6 +56,8 @@ public class RegisterController {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 showAlert(response, "Registration Successful", "User registration successful.");
+                ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Login-view.fxml", "Login from");
+
             } else {
                 showAlert(response, "Registration Failed", "Something went wrong.");
             }

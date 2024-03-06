@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -30,7 +31,6 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="txtStatus" layoutX="608.0" layoutY="131.0" promptText="        Active or Inactive" />
     <Label layoutX="608.0" layoutY="103.0" prefHeight="27.0" prefWidth="62.0" text="status">
         <font>
             <Font size="18.0" />
@@ -139,4 +139,5 @@
          </Lighting>
       </effect>
    </Button>
+   <ComboBox fx:id="cmbStatus" layoutX="606.0" layoutY="130.0" prefWidth="150.0" promptText="    Active or Inactive" />
 </AnchorPane>

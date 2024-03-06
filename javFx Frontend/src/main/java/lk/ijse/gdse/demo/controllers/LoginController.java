@@ -34,6 +34,7 @@ public class LoginController {
     private TextField txtUsername;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
+//    check username password
     @FXML
     void btnLoginOnAction(ActionEvent event) throws IOException {
         String usernameText = txtUsername.getText();

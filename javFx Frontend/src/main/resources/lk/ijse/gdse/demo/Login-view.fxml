@@ -17,7 +17,7 @@
                     <Font name="System Bold" size="54.0" />
                 </font>
             </Text>
-            <Text fill="WHITE" layoutX="82.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage System">
+            <Text fill="WHITE" layoutX="60.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Management systems">
                 <font>
                     <Font size="18.0" />
                 </font>

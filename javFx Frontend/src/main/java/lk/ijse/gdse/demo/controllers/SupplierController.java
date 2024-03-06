@@ -54,7 +54,7 @@ public class SupplierController {
     private TextField txtName;
 
     @FXML
-    private TextField txtStatus;
+    public ComboBox cmbStatus;
 
     public void initialize() {
         setCellValueFactory();
@@ -64,6 +64,8 @@ public class SupplierController {
                 handleTableClick();
             }
         });
+        ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
+        cmbStatus.setItems(statusList);
     }
 
     private void handleTableClick() {
@@ -74,7 +76,7 @@ public class SupplierController {
             txtCode.setText(selectedSupplier.getSupplierCode());
             txtName.setText(selectedSupplier.getName());
             txtAddress.setText(selectedSupplier.getAddress());
-            txtStatus.setText(selectedSupplier.getStatus());
+            cmbStatus.setValue(selectedSupplier.getStatus());
         }
     }
 
@@ -185,7 +187,7 @@ public class SupplierController {
             return;
         }
         if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() ||
-                txtAddress.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+                txtAddress.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
             return;
         }
@@ -194,7 +196,7 @@ public class SupplierController {
                 txtCode.getText(),
                 txtName.getText(),
                 txtAddress.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
         );
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -229,7 +231,7 @@ public class SupplierController {
     @FXML
     void btnUpdate(ActionEvent event) {
         if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() ||
-                txtAddress.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+                txtAddress.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
             return;
         }
@@ -239,7 +241,8 @@ public class SupplierController {
                 txtCode.getText(),
                 txtName.getText(),
                 txtAddress.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
+
         );
         try {
             HttpClient httpClient = HttpClient.newHttpClient();

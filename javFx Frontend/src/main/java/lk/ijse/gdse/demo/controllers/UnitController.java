@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.dto.Unit;
-import lk.ijse.gdse.demo.util.Navigation;
-import lk.ijse.gdse.demo.util.Routes;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
@@ -51,9 +48,9 @@ public class UnitController {
 
     @FXML
     private TextField txtName;
-
     @FXML
-    private TextField txtStatus;
+    public ComboBox cmbStatus;
+
 
 
     public void initialize() {
@@ -64,16 +61,21 @@ public class UnitController {
                 handleTableClick();
             }
         });
+        ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
+        cmbStatus.setItems(statusList);
+
     }
+
     private void handleTableClick() {
         Unit selectedCategory = tblView.getSelectionModel().getSelectedItem();
         if (selectedCategory != null) {
             txtId.setText(selectedCategory.getId());
             txtCode.setText(selectedCategory.getCode());
             txtName.setText(selectedCategory.getName());
-            txtStatus.setText(selectedCategory.getStatus());
+            cmbStatus.setValue(selectedCategory.getStatus());
         }
     }
+
     private void setCellValueFactory() {
         // Set cell value factory for each column
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -147,7 +149,7 @@ public class UnitController {
     @FXML
     void btnDelete(ActionEvent event) {
         if (txtId.getText().isEmpty()) {
-            showAlert( "Error", "Enter Id");
+            showAlert("Error", "Enter Id");
             return;
         }
         String idText = txtId.getText();
@@ -183,7 +185,7 @@ public class UnitController {
             return;
         }
 
-        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
             return;
         }
@@ -191,7 +193,7 @@ public class UnitController {
                 txtId.getText(),
                 txtCode.getText(),
                 txtName.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
         );
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -221,7 +223,7 @@ public class UnitController {
             return;
         }
 
-        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
+        if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() ) {
             showAlert("Error", "Enter All Details");
             return;
         }
@@ -230,7 +232,7 @@ public class UnitController {
                 null,
                 txtCode.getText(),
                 txtName.getText(),
-                txtStatus.getText()
+                cmbStatus.getValue().toString()
         );
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -269,24 +271,25 @@ public class UnitController {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Supplier from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
     }
 
     public void btnNavigateInventory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
     }
+
     private void showAlert(HttpResponse<String> response, String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
