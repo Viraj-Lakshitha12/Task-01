@@ -14,6 +14,7 @@ import lk.ijse.gdse.demo.dto.Inventory;
 import lk.ijse.gdse.demo.dto.Item;
 import lk.ijse.gdse.demo.util.Navigation;
 import lk.ijse.gdse.demo.util.Routes;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -195,7 +196,7 @@ public class InventoryController {
 
     @FXML
     void btnCategory(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.CATEGORY, pane);
+        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
     }
 
     @FXML
@@ -230,12 +231,12 @@ public class InventoryController {
 
     @FXML
     void btnNavigateInventrory(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.INVENTORY, pane);
+        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
     }
 
     @FXML
     void btnNavigationItem(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.ITEM, pane);
+        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
     }
 
 
@@ -271,12 +272,13 @@ public class InventoryController {
 
     @FXML
     void btnSupplier(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER, pane);
+        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Supplier-view.fxml","Supplier from");
     }
 
     @FXML
     void btnUnit(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.UNIT, pane);
+        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
+
     }
 
     //update inventory

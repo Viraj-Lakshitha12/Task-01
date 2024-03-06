@@ -11,8 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.dto.Item;
 import lk.ijse.gdse.demo.dto.Unit;
-import lk.ijse.gdse.demo.util.Navigation;
-import lk.ijse.gdse.demo.util.Routes;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -368,27 +367,24 @@ public class ItemController {
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.ITEM, pane);
-
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
     }
 
     public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.INVENTORY, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
 
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT, pane);
-
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY, pane);
-
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
     }
 
     private void showAlert(HttpResponse<String> response, String title, String contentText) {

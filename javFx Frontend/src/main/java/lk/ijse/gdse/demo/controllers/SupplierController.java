@@ -5,15 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.demo.dto.Supplier;
-import lk.ijse.gdse.demo.util.Navigation;
-import lk.ijse.gdse.demo.util.Routes;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -63,6 +59,23 @@ public class SupplierController {
     public void initialize() {
         setCellValueFactory();
         loadDataAndSetToTable();
+        tblView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
+    }
+
+    private void handleTableClick() {
+        Supplier selectedSupplier = tblView.getSelectionModel().getSelectedItem();
+
+        if (selectedSupplier != null) {
+            txtId.setText(String.valueOf(selectedSupplier.getId()));
+            txtCode.setText(selectedSupplier.getSupplierCode());
+            txtName.setText(selectedSupplier.getName());
+            txtAddress.setText(selectedSupplier.getAddress());
+            txtStatus.setText(selectedSupplier.getStatus());
+        }
     }
 
     private void loadDataAndSetToTable() {
@@ -137,9 +150,40 @@ public class SupplierController {
         }
     }
 
+    private boolean isInputValid() {
+        return validateTextField(txtId) &&
+                validateTextField(txtCode) &&
+                validateTextField(txtName);
+    }
+
+    private boolean validateTextField(TextField textField) {
+        String text = textField.getText().trim();
+        boolean isValid = !text.isEmpty();
+        if (!isValid) {
+            setInvalidStyle(textField);
+        } else {
+            setValidStyle(textField);
+        }
+        return isValid;
+    }
+
+
+    private void setInvalidStyle(Control control) {
+        control.setStyle("-fx-border-color: red;");
+    }
+
+    private void setValidStyle(Control control) {
+        control.setStyle("-fx-border-color: green;");
+    }
+
+
     //save supplier
     @FXML
     void btnSave(ActionEvent event) {
+        if (!isInputValid()) {
+            showAlert("Error", "Invalid data. Please check the highlighted fields.");
+            return;
+        }
         if (txtId.getText().isEmpty() || txtCode.getText().isEmpty() || txtName.getText().isEmpty() ||
                 txtAddress.getText().isEmpty() || txtStatus.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
@@ -226,24 +270,23 @@ public class SupplierController {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.ITEM, pane);
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
 
     }
 
     public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.INVENTORY, pane);
-
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
     }
 }

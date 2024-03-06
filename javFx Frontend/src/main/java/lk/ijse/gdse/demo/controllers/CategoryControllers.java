@@ -12,6 +12,7 @@ import javafx.util.converter.IntegerStringConverter;
 import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.util.Navigation;
 import lk.ijse.gdse.demo.util.Routes;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -59,8 +60,22 @@ public class CategoryControllers {
         addNumericValidationListener(txtId);
         ObservableList<String> statusList = FXCollections.observableArrayList("Active", "Inactive");
         cmbStatus.setItems(statusList);
-    }
 
+        tblView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
+    }
+    private void handleTableClick() {
+        Category selectedCategory = tblView.getSelectionModel().getSelectedItem();
+        if (selectedCategory != null) {
+            txtId.setText(selectedCategory.getId());
+            txtCode.setText(selectedCategory.getCode());
+            txtName.setText(selectedCategory.getName());
+            cmbStatus.setValue(selectedCategory.getStatus());
+        }
+    }
     private void addNumericValidationListener(TextField textField) {
         TextFormatter<Integer> textFormatter = new TextFormatter<>(
                 new IntegerStringConverter(), 0, c -> {
@@ -285,23 +300,22 @@ public class CategoryControllers {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Supplier-view.fxml","Supplier from");
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.ITEM, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
     }
 
     public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.INVENTORY, pane);
-
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
     }
 }

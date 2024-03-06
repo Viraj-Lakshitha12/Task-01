@@ -8,9 +8,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.dto.Unit;
 import lk.ijse.gdse.demo.util.Navigation;
 import lk.ijse.gdse.demo.util.Routes;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -57,8 +59,21 @@ public class UnitController {
     public void initialize() {
         setCellValueFactory();
         loadDataAndSetToTable();
+        tblView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
     }
-
+    private void handleTableClick() {
+        Unit selectedCategory = tblView.getSelectionModel().getSelectedItem();
+        if (selectedCategory != null) {
+            txtId.setText(selectedCategory.getId());
+            txtCode.setText(selectedCategory.getCode());
+            txtName.setText(selectedCategory.getName());
+            txtStatus.setText(selectedCategory.getStatus());
+        }
+    }
     private void setCellValueFactory() {
         // Set cell value factory for each column
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -254,23 +269,23 @@ public class UnitController {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.CATEGORY, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.UNIT, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER, pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Supplier from");
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.ITEM,pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
     }
 
     public void btnNavigateInventory(ActionEvent actionEvent) throws IOException {
-        Navigation.navigate(Routes.INVENTORY,pane);
+        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
     }
     private void showAlert(HttpResponse<String> response, String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
