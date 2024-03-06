@@ -98,6 +98,45 @@ public class ItemController {
         cmbStatus.setItems(statusList);
     }
 
+    private boolean isInputValid() {
+        return validateTextField(txtId) &&
+                validateTextField(txtCode) &&
+                validateTextField(txtName) &&
+                validateComboBox(cmbCategory) &&
+                validateComboBox(cmbUnit) &&
+                validateComboBox(cmbStatus);
+    }
+
+    private boolean validateTextField(TextField textField) {
+        String text = textField.getText().trim();
+        boolean isValid = !text.isEmpty();
+        if (!isValid) {
+            setInvalidStyle(textField);
+        } else {
+            setValidStyle(textField);
+        }
+        return isValid;
+    }
+
+    private boolean validateComboBox(ComboBox<String> comboBox) {
+        boolean isValid = comboBox.getValue() != null;
+        if (!isValid) {
+            setInvalidStyle(comboBox);
+        } else {
+            setValidStyle(comboBox);
+        }
+        return isValid;
+    }
+
+    private void setInvalidStyle(Control control) {
+        control.setStyle("-fx-border-color: red;");
+    }
+
+    private void setValidStyle(Control control) {
+        control.setStyle("-fx-border-color: green;");
+    }
+
+
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -182,9 +221,23 @@ public class ItemController {
         return null;
     }
 
+    private boolean validateAllFields() {
+        boolean isIdValid = validateTextField(txtId);
+        boolean isCodeValid = validateTextField(txtCode);
+        boolean isNameValid = validateTextField(txtName);
+        boolean isCategoryValid = validateComboBox(cmbCategory);
+        boolean isUnitValid = validateComboBox(cmbUnit);
+        boolean isStatusValid = cmbStatus.getValue() != null;
+
+        return isIdValid && isCodeValid && isNameValid && isCategoryValid && isUnitValid && isStatusValid;
+    }
 
     @FXML
     void btnSaveItem(ActionEvent event) {
+        if (!validateAllFields()) {
+            showAlert(null, "Error", "Invalid data. Please check the highlighted fields.");
+            return;
+        }
         Category category = cmbOnActionCategory(event);
         Unit unit = cmbOnActionUnit(event);
 

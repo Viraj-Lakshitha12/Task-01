@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse.demo.dto.Unit;
@@ -104,6 +101,33 @@ public class UnitController {
     }
 
 
+    private boolean isInputValid() {
+        return validateTextField(txtId) &&
+                validateTextField(txtCode) &&
+                validateTextField(txtName);
+    }
+
+    private boolean validateTextField(TextField textField) {
+        String text = textField.getText().trim();
+        boolean isValid = !text.isEmpty();
+        if (!isValid) {
+            setInvalidStyle(textField);
+        } else {
+            setValidStyle(textField);
+        }
+        return isValid;
+    }
+
+
+    private void setInvalidStyle(Control control) {
+        control.setStyle("-fx-border-color: red;");
+    }
+
+    private void setValidStyle(Control control) {
+        control.setStyle("-fx-border-color: green;");
+    }
+
+
     // Delete unit
     @FXML
     void btnDelete(ActionEvent event) {
@@ -139,6 +163,11 @@ public class UnitController {
     // Update unit
     @FXML
     void btnUpdate(ActionEvent event) {
+        if (!isInputValid()) {
+            showAlert(null, "Error", "Invalid data. Please check the highlighted fields.");
+            return;
+        }
+
         if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
             return;
@@ -172,6 +201,11 @@ public class UnitController {
     // Save unit
     @FXML
     void btnSave(ActionEvent event) {
+        if (!isInputValid()) {
+            showAlert(null, "Error", "Invalid data. Please check the highlighted fields.");
+            return;
+        }
+
         if (txtCode.getText().isEmpty() || txtName.getText().isEmpty() || txtStatus.getText().isEmpty()) {
             showAlert("Error", "Enter All Details");
             return;
@@ -238,4 +272,12 @@ public class UnitController {
     public void btnNavigateInventory(ActionEvent actionEvent) throws IOException {
         Navigation.navigate(Routes.INVENTORY,pane);
     }
+    private void showAlert(HttpResponse<String> response, String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
 }

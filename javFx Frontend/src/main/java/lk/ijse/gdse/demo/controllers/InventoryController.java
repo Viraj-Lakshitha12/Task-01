@@ -94,7 +94,7 @@ public class InventoryController {
 
     public void initialize() {
         addValidationListener(txtId);
-        addNumericValidationListener(txtQty);
+        addNumericValidationListener(txtQty, 10);
         tblView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) {
                 handleTableClick();
@@ -107,10 +107,10 @@ public class InventoryController {
         setCellValueFactory();
         cmbItemId.setItems(fetchDataForComboBox("http://localhost:8080/api/items/getIds"));
         loadDataAndSetToTable();
+        datePicker.setEditable(false);
     }
 
     private void handleTableClick() {
-        // Get the selected inventory item from the table
         Inventory selectedInventory = tblView.getSelectionModel().getSelectedItem();
 
         if (selectedInventory != null) {
@@ -140,10 +140,11 @@ public class InventoryController {
         textField.setTextFormatter(textFormatter);
     }
 
-    private void addNumericValidationListener(TextField textField) {
+    private void addNumericValidationListener(TextField textField, int maxLength) {
         TextFormatter<Integer> textFormatter = new TextFormatter<>(
                 new IntegerStringConverter(), 0, c -> {
-            if (c.getControlNewText().matches("\\d*")) {
+            String newText = c.getControlNewText();
+            if (newText.matches("\\d*") && newText.length() <= maxLength) {
                 return c;
             } else {
                 return null;
@@ -151,6 +152,7 @@ public class InventoryController {
         });
         textField.setTextFormatter(textFormatter);
     }
+
     private void setCellValueFactory() {
         colViewItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colItemName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -198,6 +200,32 @@ public class InventoryController {
 
     @FXML
     void btnDelete(ActionEvent event) {
+        String idText = txtId.getText();
+
+        try {
+            if (idText.isEmpty()) {
+                showAlert(null, "Error", "Please enter a valid Inventory ID for deletion.");
+                return;
+            }
+
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/api/inventory/" + idText))
+                    .header("Content-Type", "application/json")
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                showAlert(null, "Delete Successful", "Inventory has been successfully deleted.");
+            } else {
+                showAlert(null, "Error", "Please enter a valid Inventory ID for deletion.");
+            }
+            loadDataAndSetToTable();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
@@ -211,10 +239,11 @@ public class InventoryController {
     }
 
 
-//    save inventory
+    //    save inventory
     @FXML
     void btnSave(ActionEvent event) {
         if (!isInputValid()) {
+            showAlert(null, "Error", "Invalid data. Please check the highlighted fields.");
             return;
         }
 
@@ -242,12 +271,12 @@ public class InventoryController {
 
     @FXML
     void btnSupplier(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.SUPPLIER,pane);
+        Navigation.navigate(Routes.SUPPLIER, pane);
     }
 
     @FXML
     void btnUnit(ActionEvent event) throws IOException {
-        Navigation.navigate(Routes.UNIT,pane);
+        Navigation.navigate(Routes.UNIT, pane);
     }
 
     //update inventory
@@ -272,6 +301,8 @@ public class InventoryController {
             HttpResponse<String> response = connectBackend("http://localhost:8080/api/inventory", "PUT", inventoryJson);
             if (response.statusCode() == 200) {
                 showAlert(response, "Update Successful", "Inventory has been successfully Updated.");
+            } else {
+                showAlert(null, "Error", "Please enter a valid Inventory ID for deletion.");
             }
             loadDataAndSetToTable();
         } catch (IOException e) {
@@ -287,7 +318,7 @@ public class InventoryController {
                 validateControl(datePicker);
     }
 
-//    validation
+    //    validation
     private boolean validateControl(Control control) {
         if (control instanceof TextInputControl) {
             return validateTextInputControl((TextInputControl) control);
@@ -299,7 +330,7 @@ public class InventoryController {
         return false;
     }
 
-//    validate txt inputs
+    //    validate txt inputs
     private boolean validateTextInputControl(TextInputControl textInputControl) {
         String text = textInputControl.getText().trim();
         if (text.isEmpty()) {
@@ -311,7 +342,7 @@ public class InventoryController {
         }
     }
 
-//    validate combobox
+    //    validate combobox
     private boolean validateComboBox(ComboBox<?> comboBox) {
         Object value = comboBox.getValue();
         if (value == null || value.toString().trim().isEmpty()) {
@@ -323,7 +354,7 @@ public class InventoryController {
         }
     }
 
-//    validate date picker
+    //    validate date picker
     private boolean validateDatePicker(DatePicker datePicker) {
         LocalDate value = datePicker.getValue();
         if (value == null) {
@@ -343,13 +374,13 @@ public class InventoryController {
         control.setStyle("-fx-border-color: green;");
     }
 
-//    load all data for the table
+    //    load all data for the table
     private void loadDataAndSetToTable() {
         List<Inventory> itemList = fetchDataFromBackend();
         updateTableView(itemList);
     }
 
-//    update table
+    //    update table
     private void updateTableView(List<Inventory> itemList) {
         ObservableList<Inventory> observableList = FXCollections.observableArrayList(itemList);
         tblView.setItems(observableList);

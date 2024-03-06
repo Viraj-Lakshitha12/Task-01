@@ -104,6 +104,7 @@ public class SupplierController {
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
     }
 
+
     //delete supplier
     @FXML
     void btnDelete(ActionEvent event) {
