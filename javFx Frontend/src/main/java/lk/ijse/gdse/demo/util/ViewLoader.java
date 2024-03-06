@@ -1,6 +1,7 @@
 package lk.ijse.gdse.demo.util;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ViewLoader {
-    public static void loadNewView(ActionEvent event, String url, String title) {
+    public static void loadNewView(Event event, String url, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(ViewLoader.class.getResource(url));
             Parent window = loader.load();

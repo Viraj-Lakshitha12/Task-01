@@ -10,8 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.IntegerStringConverter;
 import lk.ijse.gdse.demo.dto.Category;
-import lk.ijse.gdse.demo.util.Navigation;
-import lk.ijse.gdse.demo.util.Routes;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
@@ -54,6 +52,8 @@ public class CategoryControllers {
     @FXML
     private TextField txtStatus;
 
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
     public void initialize() {
         setCellValueFactory();
         loadDataAndSetToTable();
@@ -67,6 +67,7 @@ public class CategoryControllers {
             }
         });
     }
+
     private void handleTableClick() {
         Category selectedCategory = tblView.getSelectionModel().getSelectedItem();
         if (selectedCategory != null) {
@@ -76,6 +77,7 @@ public class CategoryControllers {
             cmbStatus.setValue(selectedCategory.getStatus());
         }
     }
+
     private void addNumericValidationListener(TextField textField) {
         TextFormatter<Integer> textFormatter = new TextFormatter<>(
                 new IntegerStringConverter(), 0, c -> {
@@ -103,7 +105,6 @@ public class CategoryControllers {
 
     private List<Category> fetchDataFromBackend() {
         try {
-            HttpClient httpClient = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
@@ -140,8 +141,6 @@ public class CategoryControllers {
                 showAlert(null, "Error", "Please enter a valid category ID for deletion.");
                 return;
             }
-
-            HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories/" + idText))
                     .header("Content-Type", "application/json")
@@ -178,7 +177,6 @@ public class CategoryControllers {
                 cmbStatus.getValue().toString()
         );
         try {
-            HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
                     .header("Content-Type", "application/json")
@@ -238,7 +236,7 @@ public class CategoryControllers {
         }
 
 
-        return isIdValid && isCodeValid && isNameValid ;
+        return isIdValid && isCodeValid && isNameValid;
     }
 
     // Save category
@@ -263,8 +261,6 @@ public class CategoryControllers {
         );
         System.out.println(categoryDTO);
         try {
-            HttpClient httpClient = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
                     .header("Content-Type", "application/json")
@@ -300,22 +296,22 @@ public class CategoryControllers {
     }
 
     public void btnCategory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
     }
 
     public void btnUnit(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
     }
 
     public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Supplier-view.fxml","Supplier from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
     }
 
     public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
     }
 
     public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
+        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
     }
 }

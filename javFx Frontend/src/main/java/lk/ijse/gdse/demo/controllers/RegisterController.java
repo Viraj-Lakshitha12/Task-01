@@ -1,6 +1,5 @@
 package lk.ijse.gdse.demo.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,16 +9,17 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import lk.ijse.gdse.demo.dto.Category;
+import lk.ijse.gdse.demo.dto.User;
 import lk.ijse.gdse.demo.util.PasswordUtils;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class LoginController {
+public class RegisterController {
 
     @FXML
     private Button loginButton;
@@ -35,39 +35,47 @@ public class LoginController {
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @FXML
-    void btnLoginOnAction(ActionEvent event) throws IOException {
+    void btnRegisterOnAction(ActionEvent event) {
         String usernameText = txtUsername.getText();
         String passwordText = txtPassword.getText();
 
+        // Hash the password before storing it
+        String hashedPassword = PasswordUtils.hashPassword(passwordText);
+
+        User user = new User(usernameText, hashedPassword);
+
         try {
-            String userEndpoint = "http://localhost:8080/api/user/" + usernameText;
+            String registerEndpoint = "http://localhost:8080/api/user";
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(userEndpoint))
+                    .uri(URI.create(registerEndpoint))
                     .header("Content-Type", "application/json")
-                    .GET().build();
+                    .POST(HttpRequest.BodyPublishers.ofString(userDTOToJson(user)))
+                    .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            // Parse the JSON response
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(response.body());
-
-            // Extract hashed password from the response
-            String hashedPassword = jsonNode.get("data").get("password").asText();
-
-            // Check if the entered password matches the stored hashed password
-            if (PasswordUtils.verifyPassword(passwordText, hashedPassword)) {
-                // Passwords match, proceed to the next view
-                ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
+            if (response.statusCode() == 200) {
+                showAlert(response, "Registration Successful", "User registration successful.");
             } else {
-                // Passwords do not match, show an alert or handle it accordingly
-                showAlert(null, "Login Failed", "Invalid username or password.");
+                showAlert(response, "Registration Failed", "Something went wrong.");
             }
 
         } catch (Exception e) {
-            showAlert(null, "Login Failed", "Error occurred during user login.");
+            showAlert(null, "Registration Failed", "Error occurred during user registration.");
         }
     }
+
+
+
+    private String userDTOToJson(User user) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(user);
+        } catch (Exception e) {
+            return "{}";
+        }
+    }
+
 
     private void showAlert(HttpResponse<String> response, String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -78,8 +86,8 @@ public class LoginController {
     }
 
     @FXML
-    void showRegisterStage(MouseEvent event) {
-        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Register-view.fxml", "Register from");
+    void showLoginStage(MouseEvent event) {
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Login-view.fxml", "Login from");
     }
 
 }
