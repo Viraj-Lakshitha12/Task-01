@@ -25,7 +25,7 @@ public class JwtTokenProvider {
     private final SecretKey key;
     private final long jwtExpiration;
 
-    public JwtTokenProvider(@Value("${jwt.expiration}000") long jwtExpiration) {
+    public JwtTokenProvider(@Value("${jwt.expiration}") long jwtExpiration) {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.jwtExpiration = jwtExpiration;
     }
