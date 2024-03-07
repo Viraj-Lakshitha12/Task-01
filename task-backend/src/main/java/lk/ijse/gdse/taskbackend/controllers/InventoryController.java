@@ -1,5 +1,6 @@
 package lk.ijse.gdse.taskbackend.controllers;
 
+import lk.ijse.gdse.taskbackend.auth.JwtTokenProvider;
 import lk.ijse.gdse.taskbackend.dto.InventoryDTO;
 import lk.ijse.gdse.taskbackend.entity.Inventory;
 import lk.ijse.gdse.taskbackend.service.InventoryService;
@@ -14,36 +15,57 @@ import java.util.List;
 @RequestMapping("/api/inventory")
 public class InventoryController {
     private final InventoryService inventoryService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public InventoryController(InventoryService inventoryService) {
+    public InventoryController(InventoryService inventoryService, JwtTokenProvider jwtTokenProvider) {
         this.inventoryService = inventoryService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping
-    public ResponseUtil saveInventory(@RequestBody InventoryDTO inventoryDTO) {
-        System.out.println(inventoryDTO);
-        Inventory inventory = inventoryService.saveInventory(inventoryDTO);
-        return new ResponseUtil(200, "Saved inventory", inventory);
+    public ResponseUtil saveInventory(@RequestBody InventoryDTO inventoryDTO, @RequestHeader("Authorization") String authorizationHeader) {
+        if (jwtTokenProvider.validateToken(authorizationHeader)) {
+            Inventory inventory = inventoryService.saveInventory(inventoryDTO);
+            return new ResponseUtil(200, "Saved inventory", inventory);
+        } else {
+            return new ResponseUtil(401, "Invalid token", null);
+        }
+    }
+
+    private String extractToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
     }
 
     @GetMapping
-    public List<InventoryDTO> getAllInventories() {
-        List<InventoryDTO> inventories = inventoryService.getAllInventories();
-        //return new ResponseUtil(200, "Retrieved all inventories", inventories);
-        return inventories;
+    public List<InventoryDTO> getAllInventories(@RequestHeader("Authorization") String authorizationHeader) {
+        if (jwtTokenProvider.validateToken(authorizationHeader)) {
+            return inventoryService.getAllInventories();
+        } else {
+            System.out.println("wd");
+            return null;
+        }
     }
 
     @PutMapping
-    public ResponseUtil updateInventory(@RequestBody InventoryDTO inventoryDTO) {
-        System.out.println(inventoryDTO);
-        Inventory updatedInventory = inventoryService.updateInventory(inventoryDTO);
-        return new ResponseUtil(200, "Updated inventory", updatedInventory);
+    public ResponseUtil updateInventory(@RequestBody InventoryDTO inventoryDTO,@RequestHeader("Authorization") String authorizationHeader) {
+        if (jwtTokenProvider.validateToken(authorizationHeader)) {
+            Inventory updatedInventory = inventoryService.updateInventory(inventoryDTO);
+            return new ResponseUtil(200, "Updated inventory", updatedInventory);
+        }
+        return new ResponseUtil(401, "UnAuthorization", null);
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseUtil deleteInventory(@PathVariable Long id) {
-        String result = inventoryService.deleteInventory(id);
-        return new ResponseUtil(200, result, null);
+    public ResponseUtil deleteInventory(@PathVariable Long id,@RequestHeader("Authorization") String authorizationHeader) {
+        if (jwtTokenProvider.validateToken(authorizationHeader)) {
+            String result = inventoryService.deleteInventory(id);
+            return new ResponseUtil(200, result, null);
+        }
+        return new ResponseUtil(200, "UnAuthorization", null);
     }
 }
