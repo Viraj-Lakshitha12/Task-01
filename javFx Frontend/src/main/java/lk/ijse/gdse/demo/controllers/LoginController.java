@@ -10,7 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import lk.ijse.gdse.demo.util.PasswordUtils;
+import lk.ijse.gdse.demo.dto.User;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
@@ -34,49 +34,50 @@ public class LoginController {
     private TextField txtUsername;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-//    check username password
+    //    check username password
     @FXML
     void btnLoginOnAction(ActionEvent event) throws IOException {
         String usernameText = txtUsername.getText();
         String passwordText = txtPassword.getText();
 
         try {
-            String userEndpoint = "http://localhost:8080/api/user/" + usernameText;
+            String userEndpoint = "http://localhost:8080/api/user/login";
+
+            User user = new User();
+            user.setUserName(usernameText);
+            user.setPassword(passwordText);
+
+            // Convert User object to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonRequest = objectMapper.writeValueAsString(user);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(userEndpoint))
                     .header("Content-Type", "application/json")
-                    .GET().build();
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
+                    .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            // Parse the JSON response
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(response.body());
-
-            // Extract hashed password from the response
-            String hashedPassword = jsonNode.get("data").get("password").asText();
-
-            // Check if the entered password matches the stored hashed password
-            if (PasswordUtils.verifyPassword(passwordText, hashedPassword)) {
-                // Passwords match, proceed to the next view
+            if (response.statusCode() == 200) {
+                ObjectMapper responseMapper = new ObjectMapper();
+                JsonNode jsonResponse = responseMapper.readTree(response.body());
+                String token = jsonResponse.get("data").asText();
+                InventoryController.jwtToken = token;
                 ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
-            } else {
-                // Passwords do not match, show an alert or handle it accordingly
-                showAlert(null, "Login Failed", "Invalid username or password.");
             }
 
         } catch (Exception e) {
-            showAlert(null, "Login Failed", "Error occurred during user login.");
+            showAlert("Login Failed", "Error occurred during user login.");
         }
     }
 
-    private void showAlert(HttpResponse<String> response, String title, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(title);
-        alert.setContentText(contentText);
+        alert.setContentText(content);
         alert.showAndWait();
     }
+
 
     @FXML
     void showRegisterStage(MouseEvent event) {

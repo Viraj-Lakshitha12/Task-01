@@ -12,8 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.IntegerStringConverter;
 import lk.ijse.gdse.demo.dto.Inventory;
 import lk.ijse.gdse.demo.dto.Item;
-import lk.ijse.gdse.demo.util.Navigation;
-import lk.ijse.gdse.demo.util.Routes;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
@@ -91,7 +89,7 @@ public class InventoryController {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
+    public static String jwtToken;
 
     public void initialize() {
         addValidationListener(txtId);
@@ -177,11 +175,11 @@ public class InventoryController {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
 
-            HttpRequest request = HttpRequest.newBuilder()
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(url))
-                    .GET()
-                    .build();
-
+                    .header("Authorization", jwtToken)
+                    .GET();
+            HttpRequest request = requestBuilder.build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -193,10 +191,18 @@ public class InventoryController {
         }
     }
 
+    private HttpRequest.Builder addAuthorizationHeader(HttpRequest.Builder builder) {
+        if (InventoryController.jwtToken != null && !InventoryController.jwtToken.isEmpty()) {
+            System.out.println(jwtToken);
+            return builder.header("Authorization", InventoryController.jwtToken);
+        }
+        return builder;
+    }
+
 
     @FXML
     void btnCategory(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Category-view.fxml","Category from");
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
     }
 
     @FXML
@@ -213,6 +219,7 @@ public class InventoryController {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/inventory/" + idText))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", jwtToken)
                     .DELETE()
                     .build();
 
@@ -231,12 +238,12 @@ public class InventoryController {
 
     @FXML
     void btnNavigateInventrory(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Inventory-view.fxml","Inventory from");
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
     }
 
     @FXML
     void btnNavigationItem(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Item-view.fxml","Item from");
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
     }
 
 
@@ -272,12 +279,12 @@ public class InventoryController {
 
     @FXML
     void btnSupplier(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Supplier-view.fxml","Supplier from");
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
     }
 
     @FXML
     void btnUnit(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event,"/lk/ijse/gdse/demo/Unit-view.fxml","Unit from");
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
 
     }
 
@@ -392,6 +399,7 @@ public class InventoryController {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/inventory"))
+                    .header("Authorization", jwtToken)
                     .GET()
                     .build();
 
@@ -416,6 +424,7 @@ public class InventoryController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .header("Authorization", jwtToken)
                     .GET()
                     .build();
 

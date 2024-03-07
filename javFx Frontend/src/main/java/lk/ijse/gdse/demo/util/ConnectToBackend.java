@@ -1,5 +1,7 @@
 package lk.ijse.gdse.demo.util;
 
+import lk.ijse.gdse.demo.controllers.InventoryController;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,7 +15,8 @@ public class ConnectToBackend {
 
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(url))
-                    .header("Content-Type", "application/json");
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", InventoryController.jwtToken);
 
             switch (methodType.toUpperCase()) {
                 case "GET":
