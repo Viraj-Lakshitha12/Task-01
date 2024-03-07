@@ -33,6 +33,7 @@ public class LoginController {
     @FXML
     private TextField txtUsername;
     private final HttpClient httpClient = HttpClient.newHttpClient();
+    public static String jwtToken;
 
     //    check username password
     @FXML
@@ -62,7 +63,7 @@ public class LoginController {
                 ObjectMapper responseMapper = new ObjectMapper();
                 JsonNode jsonResponse = responseMapper.readTree(response.body());
                 String token = jsonResponse.get("data").asText();
-                InventoryController.jwtToken = token;
+                jwtToken = token;
                 ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
             }
 

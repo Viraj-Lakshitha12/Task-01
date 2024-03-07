@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
 import static lk.ijse.gdse.demo.util.ConnectToBackend.connectBackend;
 
 public class InventoryController {
@@ -89,7 +90,7 @@ public class InventoryController {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    public static String jwtToken;
+
 
     public void initialize() {
         addValidationListener(txtId);
@@ -192,9 +193,9 @@ public class InventoryController {
     }
 
     private HttpRequest.Builder addAuthorizationHeader(HttpRequest.Builder builder) {
-        if (InventoryController.jwtToken != null && !InventoryController.jwtToken.isEmpty()) {
+        if (jwtToken != null && !jwtToken.isEmpty()) {
             System.out.println(jwtToken);
-            return builder.header("Authorization", InventoryController.jwtToken);
+            return builder.header("Authorization",jwtToken);
         }
         return builder;
     }

@@ -7,6 +7,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
+
 public class ConnectToBackend {
 
     public static HttpResponse<String> connectBackend(String url, String methodType, String requestBody) {
@@ -16,7 +18,7 @@ public class ConnectToBackend {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", InventoryController.jwtToken);
+                    .header("Authorization", jwtToken);
 
             switch (methodType.toUpperCase()) {
                 case "GET":

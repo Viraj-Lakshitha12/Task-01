@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
+
 public class CategoryControllers {
 
     public AnchorPane pane;
@@ -108,6 +110,7 @@ public class CategoryControllers {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
+                    .header("Authorization",jwtToken)
                     .GET()
                     .build();
 
@@ -144,6 +147,7 @@ public class CategoryControllers {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories/" + idText))
                     .header("Content-Type", "application/json")
+                    .header("Authorization",jwtToken)
                     .DELETE()
                     .build();
 
@@ -180,6 +184,7 @@ public class CategoryControllers {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization",jwtToken)
                     .PUT(HttpRequest.BodyPublishers.ofString(categoryDTOToJson(categoryDTO)))
                     .build();
 
@@ -264,6 +269,7 @@ public class CategoryControllers {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/categories"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization",jwtToken)
                     .POST(HttpRequest.BodyPublishers.ofString(categoryDTOToJson(categoryDTO)))
                     .build();
 
