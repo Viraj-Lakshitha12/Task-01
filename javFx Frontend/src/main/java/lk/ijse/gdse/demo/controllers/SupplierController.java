@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
+
 public class SupplierController {
 
     public AnchorPane pane;
@@ -92,6 +94,7 @@ public class SupplierController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/suppliers"))
+                    .header("Authorization", jwtToken)
                     .GET()
                     .build();
 
@@ -203,6 +206,7 @@ public class SupplierController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/suppliers"))
+                    .header("Authorization", jwtToken)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(supplierDTOToJson(supplierDTO)))
                     .build();
@@ -250,12 +254,15 @@ public class SupplierController {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/suppliers"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", jwtToken)
                     .PUT(HttpRequest.BodyPublishers.ofString(supplierDTOToJson(supplierDTO)))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
             if (response.statusCode() == 200) {
                 showAlert("Update Successful", "Supplier has been successfully updated.");
+                loadDataAndSetToTable();
             }
             loadDataAndSetToTable();
 

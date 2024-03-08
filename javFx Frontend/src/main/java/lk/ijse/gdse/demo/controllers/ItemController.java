@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
 import static lk.ijse.gdse.demo.util.ConnectToBackend.connectBackend;
 
 public class ItemController {
@@ -171,6 +172,7 @@ public class ItemController {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/items"))
+                    .header("Authorization", jwtToken)
                     .GET()
                     .build();
 
@@ -196,6 +198,7 @@ public class ItemController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .header("Authorization",jwtToken)
                     .GET()
                     .build();
 
@@ -219,6 +222,7 @@ public class ItemController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .header("Authorization",jwtToken)
                     .GET()
                     .build();
 
@@ -301,7 +305,8 @@ public class ItemController {
             }
             HttpRequest.Builder builder = HttpRequest.newBuilder();
             builder.uri(URI.create("http://localhost:8080/api/items/" + idText));
-            builder.header("Content-Type", "application/json");
+            builder.header("Content-Type", "application/json")
+                    .header("Authorization", jwtToken);
             builder.DELETE();
             HttpRequest request = builder
                     .build();
@@ -369,6 +374,7 @@ public class ItemController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .header("Authorization",jwtToken)
                     .GET()
                     .build();
 

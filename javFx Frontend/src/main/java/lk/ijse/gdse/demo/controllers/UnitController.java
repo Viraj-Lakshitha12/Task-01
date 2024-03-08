@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
+
 public class UnitController {
 
     @FXML
@@ -96,6 +98,7 @@ public class UnitController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/unit"))
+                    .header("Authorization",jwtToken)
                     .GET()
                     .build();
 
@@ -200,6 +203,7 @@ public class UnitController {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/unit"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization",jwtToken)
                     .PUT(HttpRequest.BodyPublishers.ofString(unitDTOToJson(unitDTO)))
                     .build();
 
@@ -239,6 +243,7 @@ public class UnitController {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/unit"))
+                    .header("Authorization",jwtToken)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(unitDTOToJson(unitDTO)))
                     .build();
