@@ -4,7 +4,6 @@ import lk.ijse.gdse.taskbackend.auth.JwtTokenProvider;
 import lk.ijse.gdse.taskbackend.dto.CategoryDTO;
 import lk.ijse.gdse.taskbackend.entity.Category;
 import lk.ijse.gdse.taskbackend.service.CategoryService;
-import lk.ijse.gdse.taskbackend.service.InventoryService;
 import lk.ijse.gdse.taskbackend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +17,21 @@ import java.util.Optional;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final InventoryService inventoryService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, InventoryService inventoryService, JwtTokenProvider jwtTokenProvider) {
+    public CategoryController(CategoryService categoryService, JwtTokenProvider jwtTokenProvider) {
         this.categoryService = categoryService;
-        this.inventoryService = inventoryService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping
     public ResponseUtil saveCategory(@RequestBody CategoryDTO categoryDTO, @RequestHeader("Authorization") String authorizationHeader) {
-        System.out.println(categoryDTO);
-        Category category = categoryService.saveCategory(categoryDTO);
-        return new ResponseUtil(200, "successfully save category", category);
+        if (jwtTokenProvider.validateToken(authorizationHeader)) {
+            Category category = categoryService.saveCategory(categoryDTO);
+            return new ResponseUtil(200, "successfully save category", category);
+        }
+        return new ResponseUtil(401, "UnAuthorization", null);
 
     }
 
