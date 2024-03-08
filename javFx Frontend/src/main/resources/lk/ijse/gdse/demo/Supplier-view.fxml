@@ -6,13 +6,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" prefHeight="607.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.demo.controllers.SupplierController">
+<AnchorPane fx:id="pane" prefHeight="560.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.demo.controllers.SupplierController">
     <Label alignment="CENTER" layoutX="333.0" layoutY="32.0" prefHeight="35.0" prefWidth="140.0" text="Supplier">
         <font>
             <Font name="System Bold" size="24.0" />
@@ -71,80 +68,5 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <Button layoutX="343.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnCategory" style="-fx-background-radius: 10;" text="CATEGORY" textOverrun="WORD_ELLIPSIS">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-      <effect>
-         <Lighting>
-            <bumpInput>
-               <Shadow />
-            </bumpInput>
-            <light>
-               <Light.Distant />
-            </light>
-         </Lighting>
-      </effect>
-   </Button>
-   <Button layoutX="483.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnUnit" prefHeight="40.0" prefWidth="86.0" style="-fx-background-radius: 10;" text="UNIT" textOverrun="WORD_ELLIPSIS">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-      <effect>
-         <Lighting>
-            <bumpInput>
-               <Shadow />
-            </bumpInput>
-            <light>
-               <Light.Distant />
-            </light>
-         </Lighting>
-      </effect>
-   </Button>
-   <Button layoutX="590.0" layoutY="555.0" mnemonicParsing="false" onAction="#btnSupplier" style="-fx-background-radius: 10;" text="SUPPLIER" textOverrun="WORD_ELLIPSIS">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-      <effect>
-         <Lighting>
-            <bumpInput>
-               <Shadow />
-            </bumpInput>
-            <light>
-               <Light.Distant />
-            </light>
-         </Lighting>
-      </effect>
-   </Button>
-   <Button layoutX="86.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigationItem" style="-fx-background-radius: 10;" text="ITEMS" textOverrun="WORD_ELLIPSIS">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-      <effect>
-         <Lighting>
-            <bumpInput>
-               <Shadow />
-            </bumpInput>
-            <light>
-               <Light.Distant />
-            </light>
-         </Lighting>
-      </effect>
-   </Button>
-   <Button layoutX="189.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnNavigateInventrory" style="-fx-background-radius: 10;" text="INVENTORY " textOverrun="WORD_ELLIPSIS">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-      <effect>
-         <Lighting>
-            <bumpInput>
-               <Shadow />
-            </bumpInput>
-            <light>
-               <Light.Distant />
-            </light>
-         </Lighting>
-      </effect>
-   </Button>
    <ComboBox fx:id="cmbStatus" layoutX="605.0" layoutY="128.0" prefWidth="150.0" promptText="    Active or Inactive" />
 </AnchorPane>

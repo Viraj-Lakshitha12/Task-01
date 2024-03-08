@@ -64,7 +64,7 @@ public class LoginController {
                 JsonNode jsonResponse = responseMapper.readTree(response.body());
                 String token = jsonResponse.get("data").asText();
                 jwtToken = token;
-                ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
+                ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/DashBoard-view.fxml", "Inventory from");
             }
 
         } catch (Exception e) {
