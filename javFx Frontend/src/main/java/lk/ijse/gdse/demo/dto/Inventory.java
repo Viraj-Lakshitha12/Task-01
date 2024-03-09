@@ -7,6 +7,7 @@ public class Inventory {
     private Long id;
     private Item item;
     private LocalDate receivedDate;
+    private LocalDate expire_date;
     private int receivedQty;
     private String approvalStatus;
     private String status;
@@ -14,10 +15,11 @@ public class Inventory {
     public Inventory() {
     }
 
-    public Inventory(Long id, LocalDate receivedDate, int receivedQty, String approvalStatus, String status, Item item) {
+    public Inventory(Long id, Item item, LocalDate receivedDate, LocalDate expire_date, int receivedQty, String approvalStatus, String status) {
         this.id = id;
         this.item = item;
         this.receivedDate = receivedDate;
+        this.expire_date = expire_date;
         this.receivedQty = receivedQty;
         this.approvalStatus = approvalStatus;
         this.status = status;
@@ -45,6 +47,14 @@ public class Inventory {
 
     public void setReceivedDate(LocalDate receivedDate) {
         this.receivedDate = receivedDate;
+    }
+
+    public LocalDate getExpire_date() {
+        return expire_date;
+    }
+
+    public void setExpire_date(LocalDate expire_date) {
+        this.expire_date = expire_date;
     }
 
     public int getReceivedQty() {
@@ -77,6 +87,7 @@ public class Inventory {
                 "id=" + id +
                 ", item=" + item +
                 ", receivedDate=" + receivedDate +
+                ", expire_date=" + expire_date +
                 ", receivedQty=" + receivedQty +
                 ", approvalStatus='" + approvalStatus + '\'' +
                 ", status='" + status + '\'' +

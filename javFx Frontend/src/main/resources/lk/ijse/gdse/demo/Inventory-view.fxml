@@ -39,12 +39,13 @@
     </Button>
     <TableView fx:id="tblView" layoutX="16.0" layoutY="416.0" prefHeight="206.0" prefWidth="759.0">
         <columns>
-            <TableColumn fx:id="colId" prefWidth="94.4000244140625" text="Inventory Id" />
-            <TableColumn fx:id="colItemId" prefWidth="135.2000732421875" text="Item " />
-            <TableColumn fx:id="colDate" prefWidth="127.20001220703125" text="Date" />
-            <TableColumn fx:id="colQty" prefWidth="140.79998779296875" text="Qty" />
-         <TableColumn fx:id="colApproval_status" prefWidth="137.5999755859375" text="approval_status" />
-         <TableColumn fx:id="colStatus" prefWidth="120.79997558593755" text="Status" />
+            <TableColumn fx:id="colId" prefWidth="77.60000610351562" text="Inventory Id" />
+            <TableColumn fx:id="colItemId" prefWidth="153.60000610351562" text="Item " />
+            <TableColumn fx:id="colDate" prefWidth="103.2000732421875" text="Date" />
+            <TableColumn fx:id="colQty" prefWidth="85.5999755859375" text="Qty" />
+         <TableColumn fx:id="colApproval_status" prefWidth="128.800048828125" text="approval_status" />
+         <TableColumn fx:id="colExpire_date" prefWidth="84.79998779296875" text="expire_date" />
+         <TableColumn fx:id="colStatus" prefWidth="125.60002441406255" text="Status" />
         </columns>
     </TableView>
     <Button layoutX="327.0" layoutY="357.0" mnemonicParsing="false" onAction="#btnUpdate" style="-fx-background-radius: 10;" text="Update">
@@ -63,12 +64,12 @@
       </font>
    </Label>
    <ComboBox fx:id="cmbStatus" layoutX="29.0" layoutY="197.0" prefWidth="150.0" promptText="    Active or Inactive" />
-   <Label layoutX="612.0" layoutY="101.0" prefHeight="27.0" prefWidth="140.0" text="approval_status" textFill="#ff0202">
+   <Label layoutX="420.0" layoutY="172.0" prefHeight="27.0" prefWidth="140.0" text="approval_status" textFill="#ff0202">
       <font>
          <Font name="System Bold Italic" size="16.0" />
       </font>
    </Label>
-   <ComboBox fx:id="cmbApprovalStatus" layoutX="611.0" layoutY="128.0" prefWidth="150.0" promptText="             select status" />
+   <ComboBox fx:id="cmbApprovalStatus" layoutX="419.0" layoutY="199.0" prefWidth="150.0" promptText="             select status" />
    <Label layoutX="214.0" layoutY="171.0" prefHeight="27.0" prefWidth="62.0" text="Item  id" textFill="#ff0202">
       <font>
          <Font name="System Bold Italic" size="16.0" />
@@ -87,4 +88,10 @@
          <TableColumn fx:id="colItemStatus" prefWidth="120.79997558593755" text="Status" />
       </columns>
    </TableView>
+   <Label layoutX="602.0" layoutY="102.0" prefHeight="27.0" prefWidth="126.0" text="expire_date" textFill="#ff0202">
+      <font>
+         <Font name="System Bold Italic" size="16.0" />
+      </font>
+   </Label>
+   <DatePicker fx:id="expireDatePicker" layoutX="599.0" layoutY="128.0" />
 </AnchorPane>

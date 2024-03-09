@@ -31,6 +31,8 @@ public class InventoryController {
 
     public DatePicker datePicker;
     public TableColumn colViewItemId;
+    public TableColumn colExpire_date;
+    public DatePicker expireDatePicker;
     @FXML
     private ComboBox<String> cmbApprovalStatus;
 
@@ -108,6 +110,7 @@ public class InventoryController {
         cmbItemId.setItems(fetchDataForComboBox("http://localhost:8080/api/items/getIds"));
         loadDataAndSetToTable();
         datePicker.setEditable(false);
+        expireDatePicker.setEditable(false);
     }
 
     private void handleTableClick() {
@@ -116,10 +119,10 @@ public class InventoryController {
         if (selectedInventory != null) {
             txtId.setText(String.valueOf(selectedInventory.getId()));
             datePicker.setValue(selectedInventory.getReceivedDate());
+            expireDatePicker.setValue(selectedInventory.getExpire_date());
             txtQty.setText(String.valueOf(selectedInventory.getReceivedQty()));
             cmbApprovalStatus.setValue(selectedInventory.getApprovalStatus());
             cmbStatus.setValue(selectedInventory.getStatus());
-
             String itemId = String.valueOf(selectedInventory.getItem().getId());
             cmbItemId.setValue(itemId);
 
@@ -168,6 +171,7 @@ public class InventoryController {
         colQty.setCellValueFactory(new PropertyValueFactory<>("receivedQty"));
         colApproval_status.setCellValueFactory(new PropertyValueFactory<>("approvalStatus"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colExpire_date.setCellValueFactory(new PropertyValueFactory<>("expire_date"));
 
 
     }
@@ -195,7 +199,7 @@ public class InventoryController {
     private HttpRequest.Builder addAuthorizationHeader(HttpRequest.Builder builder) {
         if (jwtToken != null && !jwtToken.isEmpty()) {
             System.out.println(jwtToken);
-            return builder.header("Authorization",jwtToken);
+            return builder.header("Authorization", jwtToken);
         }
         return builder;
     }
@@ -237,15 +241,6 @@ public class InventoryController {
         }
     }
 
-    @FXML
-    void btnNavigateInventrory(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
-    }
-
-    @FXML
-    void btnNavigationItem(ActionEvent event) throws IOException {
-        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
-    }
 
 
     //    save inventory
@@ -259,11 +254,12 @@ public class InventoryController {
         Item item = cmbOnActionItemId(event);
         Long id = Long.parseLong(txtId.getText());
         LocalDate receivedDate = datePicker.getValue();
+        LocalDate expire_date = expireDatePicker.getValue();
         int receivedQty = Integer.parseInt(txtQty.getText());
         String approvalStatus = cmbApprovalStatus.getValue();
         String status = cmbStatus.getValue();
-
-        Inventory inventory = new Inventory(id, receivedDate, receivedQty, approvalStatus, status, item);
+        Inventory inventory = new Inventory(id, item, receivedDate, expire_date, receivedQty, approvalStatus, status);
+        System.out.println(inventory);
 
         String inventoryJson = null;
         try {
@@ -302,8 +298,9 @@ public class InventoryController {
         int receivedQty = Integer.parseInt(txtQty.getText());
         String approvalStatus = cmbApprovalStatus.getValue();
         String status = cmbStatus.getValue();
+        LocalDate expire_date = expireDatePicker.getValue();
 
-        Inventory inventory = new Inventory(id, receivedDate, receivedQty, approvalStatus, status, item);
+        Inventory inventory = new Inventory(id, item, receivedDate, expire_date, receivedQty, approvalStatus, status);
 
         String inventoryJson = null;
         try {
