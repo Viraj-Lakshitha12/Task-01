@@ -9,7 +9,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import lk.ijse.gdse.demo.dto.Category;
 import lk.ijse.gdse.demo.dto.User;
 import lk.ijse.gdse.demo.util.PasswordUtils;
 import lk.ijse.gdse.demo.util.ViewLoader;
@@ -39,7 +38,10 @@ public class RegisterController {
         String usernameText = txtUsername.getText();
         String passwordText = txtPassword.getText();
 
-        // Hash the password before storing it
+        if (usernameText.isEmpty() || passwordText.isEmpty()) {
+            showAlert(null, "Login Failed", "Enter your details");
+            return;
+        }
         String hashedPassword = PasswordUtils.hashPassword(passwordText);
 
         User user = new User(usernameText, hashedPassword);
@@ -66,7 +68,6 @@ public class RegisterController {
             showAlert(null, "Registration Failed", "Error occurred during user registration.");
         }
     }
-
 
 
     private String userDTOToJson(User user) {

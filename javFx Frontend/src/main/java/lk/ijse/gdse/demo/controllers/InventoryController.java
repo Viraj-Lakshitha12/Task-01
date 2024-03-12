@@ -15,6 +15,8 @@ import lk.ijse.gdse.demo.dto.Item;
 import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -23,9 +25,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import static lk.ijse.gdse.demo.controllers.LoginController.jwtToken;
 import static lk.ijse.gdse.demo.util.ConnectToBackend.connectBackend;
+import static lk.ijse.gdse.demo.util.EmailSender.sendEmail;
 
 public class InventoryController {
 
@@ -129,6 +133,7 @@ public class InventoryController {
 
         }
     }
+
 
     private void addValidationListener(TextField textField) {
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
@@ -240,7 +245,6 @@ public class InventoryController {
             System.out.println(e.getMessage());
         }
     }
-
 
 
     //    save inventory
@@ -384,8 +388,21 @@ public class InventoryController {
     //    load all data for the table
     private void loadDataAndSetToTable() {
         List<Inventory> itemList = fetchDataFromBackend();
+
+        for (Inventory item : itemList) {
+            LocalDate currentDate = LocalDate.now();
+            LocalDate expireDate = item.getExpire_date();
+
+            if (expireDate != null && expireDate.isBefore(currentDate.plusDays(10))) {
+                showAlert(null, "Warning", "Inventory id " + item.getId() + " will expire in " + item.getExpire_date());
+                sendEmail("lakshithaadhikari2002@gmail.com", "expire date", String.valueOf(item));
+                continue;
+            }
+        }
+
         updateTableView(itemList);
     }
+
 
     //    update table
     private void updateTableView(List<Inventory> itemList) {

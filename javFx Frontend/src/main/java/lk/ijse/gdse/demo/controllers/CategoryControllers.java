@@ -301,23 +301,4 @@ public class CategoryControllers {
         alert.showAndWait();
     }
 
-    public void btnCategory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Category-view.fxml", "Category from");
-    }
-
-    public void btnUnit(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Unit-view.fxml", "Unit from");
-    }
-
-    public void btnSupplier(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Supplier-view.fxml", "Supplier from");
-    }
-
-    public void btnNavigationItem(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Item-view.fxml", "Item from");
-    }
-
-    public void btnNavigateInventrory(ActionEvent actionEvent) throws IOException {
-        ViewLoader.loadNewView(actionEvent, "/lk/ijse/gdse/demo/Inventory-view.fxml", "Inventory from");
-    }
 }

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse.demo.util.ViewLoader;
 
 import java.io.IOException;
 
@@ -73,5 +74,9 @@ public class DashboardController {
         }
     }
 
-    // ... (other methods for navigation to different forms)
+    public void btnLogoutOnAction(ActionEvent event) {
+        LoginController.jwtToken = null;
+        ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/Login-view.fxml", "Login-vew");
+    }
+
 }

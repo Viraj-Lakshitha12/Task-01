@@ -40,7 +40,10 @@ public class LoginController {
     void btnLoginOnAction(ActionEvent event) throws IOException {
         String usernameText = txtUsername.getText();
         String passwordText = txtPassword.getText();
-
+        if (usernameText.isEmpty() || passwordText.isEmpty()) {
+            showAlert("Login Failed", "Enter your details");
+            return;
+        }
         try {
             String userEndpoint = "http://localhost:8080/api/user/login";
 
@@ -59,12 +62,14 @@ public class LoginController {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                ObjectMapper responseMapper = new ObjectMapper();
-                JsonNode jsonResponse = responseMapper.readTree(response.body());
+            ObjectMapper responseMapper = new ObjectMapper();
+            JsonNode jsonResponse = responseMapper.readTree(response.body());
+            if (jsonResponse.get("code").asText().equals("200")) {
                 String token = jsonResponse.get("data").asText();
                 jwtToken = token;
                 ViewLoader.loadNewView(event, "/lk/ijse/gdse/demo/DashBoard-view.fxml", "Inventory from");
+            }else{
+                showAlert("Login Failed", "UNAUTHORIZED");
             }
 
         } catch (Exception e) {
